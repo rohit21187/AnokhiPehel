@@ -22,9 +22,9 @@ public class App {
     public static void main(String []arg)
     {
         System.out.println("preparing");
-        String message="Hello , dearn this is message for security check";
+        String message="Hello , dear this is message for security check";
         String subject="CodesArea : Confirmation";
-        String to="meenakshiparihar211@gmail.com";
+        String to="minakshi.20190032@mnnit.ac.in";
         String from="meenakshiparihar789@gmail.com";
        sendEmail(message,subject,to,from);
         
