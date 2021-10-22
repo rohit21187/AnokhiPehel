@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package com.lasercodes.mavenproject1;
+import mavenproject1.*;
 import java.sql.*;
 /**
  *

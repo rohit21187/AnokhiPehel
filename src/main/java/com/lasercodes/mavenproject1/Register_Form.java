@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package com.lasercodes.mavenproject1;
+import mavenproject1.*;
 import java.sql.*;
 import java.io.File;
 import java.io.FileInputStream;
@@ -85,15 +86,15 @@ public class Register_Form extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(255, 204, 204));
+        jPanel1.setBackground(new java.awt.Color(0, 51, 102));
         jPanel1.setForeground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 0, 36)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 102, 102));
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("REGISTER");
 
         jLabel2.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(0, 102, 102));
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("FIRST NAME");
 
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
@@ -103,7 +104,7 @@ public class Register_Form extends javax.swing.JFrame {
         });
 
         jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(0, 102, 102));
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("MOBILE N0");
 
         jTextField2.addActionListener(new java.awt.event.ActionListener() {
@@ -113,7 +114,7 @@ public class Register_Form extends javax.swing.JFrame {
         });
 
         jLabel4.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(0, 102, 102));
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("LAST NAME");
 
         jTextField3.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -123,18 +124,18 @@ public class Register_Form extends javax.swing.JFrame {
         });
 
         jLabel5.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(0, 102, 102));
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("USERNAME");
 
         jLabel6.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(0, 102, 102));
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("PASSWORD");
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(0, 102, 102));
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Tip: use at least one number and at least 7 characters");
 
-        jButton1.setBackground(new java.awt.Color(0, 153, 153));
+        jButton1.setBackground(new java.awt.Color(255, 255, 255));
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jButton1.setForeground(new java.awt.Color(0, 102, 102));
         jButton1.setText("Submit");
@@ -145,36 +146,36 @@ public class Register_Form extends javax.swing.JFrame {
         });
 
         jLabel8.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(0, 102, 102));
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("REGISTRATION NUMBER");
 
         jLabel9.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(0, 102, 102));
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("Year");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3", "4" }));
 
         jLabel10.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(0, 102, 102));
+        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setText("SEX");
 
-        jRadioButton1.setBackground(new java.awt.Color(255, 204, 204));
+        jRadioButton1.setBackground(new java.awt.Color(0, 51, 102));
         jRadioButton1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jRadioButton1.setForeground(new java.awt.Color(0, 102, 102));
+        jRadioButton1.setForeground(new java.awt.Color(255, 255, 255));
         jRadioButton1.setText("Male");
 
-        jRadioButton2.setBackground(new java.awt.Color(255, 204, 204));
+        jRadioButton2.setBackground(new java.awt.Color(0, 51, 102));
         jRadioButton2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jRadioButton2.setForeground(new java.awt.Color(0, 102, 102));
+        jRadioButton2.setForeground(new java.awt.Color(255, 255, 255));
         jRadioButton2.setText("Female");
 
         jLabel11.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(0, 102, 102));
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setText("IMAGE");
 
-        jButton2.setBackground(new java.awt.Color(255, 204, 204));
+        jButton2.setBackground(new java.awt.Color(0, 51, 102));
         jButton2.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(0, 102, 102));
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("Select Image");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -184,7 +185,7 @@ public class Register_Form extends javax.swing.JFrame {
 
         jLabel12.setBackground(new java.awt.Color(51, 51, 51));
         jLabel12.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(0, 102, 102));
+        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.setText("Image Path");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
