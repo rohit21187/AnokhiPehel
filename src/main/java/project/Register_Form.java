@@ -3,29 +3,50 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.lasercodes.mavenproject1;
+package project;
+import java.awt.Color;
+import java.io.BufferedReader;
 import java.sql.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
+import javax.swing.ToolTipManager;
+import javax.swing.border.Border;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
  * @author hp
  */
+
 public class Register_Form extends javax.swing.JFrame {
 
     /**
      * Creates new form Register_Form
      */
+    private Socket s;
+    PrintWriter write;
+    BufferedReader reader;
+    public Register_Form(Socket s,PrintWriter write,BufferedReader reader) {
+        initComponents();
+        buttonGroup3=new ButtonGroup();
+        buttonGroup3.add(jRadioButton1);
+        buttonGroup3.add(jRadioButton2);
+        this.s=s;
+        this.write=write;
+        this.reader= reader;
+        setVisible(true);
+    }
     public Register_Form() {
         
         initComponents();
@@ -364,6 +385,9 @@ public class Register_Form extends javax.swing.JFrame {
                       if(ps.executeUpdate()!=0)
                       {
                          JOptionPane.showMessageDialog(null,"Your Account Has Been Created"); 
+                         dispose();
+                         NewJFrame njf= new NewJFrame();
+                          njf.setVisible(true);
                       }
                       else
                       {

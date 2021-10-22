@@ -3,35 +3,50 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.lasercodes.mavenproject1;
+package project;
 
 import java.awt.Color;
+import java.io.BufferedReader;
+import java.io.PrintWriter;
+import java.net.Socket;
 import javax.swing.BorderFactory;
 import javax.swing.ToolTipManager;
 import javax.swing.border.Border;
 import java.sql.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author hp
  */
-public class NewJFrame extends javax.swing.JFrame {
+class NewJFrame extends javax.swing.JFrame {
 
     /**
      * Creates new form NewJFrame
      */
+    private Socket s;
+    PrintWriter write;
+    BufferedReader reader;
+    public NewJFrame(Socket s,PrintWriter write,BufferedReader reader) {
+        initComponents();
+        jPasswordField1.setEchoChar((char)0);//for show password as char not as a *
+        ToolTipManager.sharedInstance().setEnabled(false);
+        Border j=BorderFactory.createMatteBorder(2, 3, 3, 3, Color.WHITE);
+        jPasswordField1.setBorder(j);
+        jTextField_username.setBorder(j);
+        this.s=s;
+        this.write=write;
+        this.reader= reader;
+         setVisible(true);
+        
+    }
     public NewJFrame() {
         initComponents();
         jPasswordField1.setEchoChar((char)0);//for show password as char not as a *
         ToolTipManager.sharedInstance().setEnabled(false);
          Border j=BorderFactory.createMatteBorder(2, 3, 3, 3, Color.WHITE);
         jPasswordField1.setBorder(j);
-        jTextField_username.setBorder(j);
-        
-        
+        jTextField_username.setBorder(j);  
     }
 
     /**
@@ -161,7 +176,7 @@ public class NewJFrame extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(jLabel3)
                         .addGap(56, 56, 56))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
@@ -189,7 +204,7 @@ public class NewJFrame extends javax.swing.JFrame {
                 .addGap(0, 126, Short.MAX_VALUE))
         );
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/anokhi8.jpg")));
+        //jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("C:/Users/rohit/OneDrive/Documents/NetBeansProjects/mavenproject1/src/main/java/com/lasercodes/mavenproject1/anokhi8.jpeg")));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -369,51 +384,40 @@ public class NewJFrame extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        PreparedStatement st=null;
-        ResultSet rs=null;
-       try(Connection cn=My_Connection.getconnection();)
-       {
-           String username=jTextField_username.getText();
-        String password=String.valueOf(jPasswordField1.getPassword());
-        String query="select * from users WHERE UserName=? AND Password=?";
-        st=cn.prepareStatement(query);
-        st.setString(1,username);
-        st.setString(2,password);
-        rs=st.executeQuery(); 
-        if(rs.next())
-        {
-          //show a new form  
+        try{
+            write.println("log");
+                String username=jTextField_username.getText();
+                String password=String.valueOf(jPasswordField1.getPassword());
+                write.println(username);
+                write.println(password);
+                String res = reader.readLine();
+                if(res.equals("correct")){
+                  //show a new form 
+                    JOptionPane.showMessageDialog(null,"correct details","Login sucess",2);
+                    //break;
+                }
+                else{
+                    //show error
+                    JOptionPane.showMessageDialog(null,"Invalid Username/Password","Login Error",2);
+                    //this.jButton1ActionPerformed(evt);
+                }
         }
-        else
-        {
-            //show error
-            JOptionPane.showMessageDialog(null,"Invalid Username/Password","Login Error",2);
-
+        catch(Exception e){
+            e.printStackTrace();
         }
-        
-       }
-       catch (Exception e){
-            e.printStackTrace();
-            }
-       
-       if(st!=null) try {
-           st.close();
-        } catch (Exception e){
-            e.printStackTrace();
-            }
-       if(rs!=null) try {
-           rs.close();
-        } catch (Exception e){
-            e.printStackTrace();
-            }
            
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
         // TODO add your handling code here:
-        Register_Form rf=new Register_Form();
+        try{
+        write.println("Reg");
+        Register_Form rf=new Register_Form(s,write,reader);
         this.dispose();
-        
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_jLabel3MouseClicked
 
     /**
