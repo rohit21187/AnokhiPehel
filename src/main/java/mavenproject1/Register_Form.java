@@ -327,6 +327,7 @@ public class Register_Form extends javax.swing.JFrame {
         std1.setmobile(jTextField3.getText());
         std1.setusername(jTextField4.getText());
         std1.setpassword(String.valueOf(jPasswordField1.getPassword()));
+        std1.setyear(jComboBox1.getSelectedIndex());
         if(jRadioButton1.isSelected())
         {
             std1.setgender("male");
