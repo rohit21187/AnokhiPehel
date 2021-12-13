@@ -344,25 +344,26 @@ public class Register_Form extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        String fname=jTextField1.getText();
-        String lname=jTextField2.getText();
-        String register=jTextField6.getText();
-        String mobile=jTextField3.getText();
-        String username=jTextField4.getText();
-        String password=String.valueOf(jPasswordField1.getPassword());
-        String gender="";
+        Registration std1=new Registration();
+        std1.setfirstname(jTextField1.getText());
+        std1.setlastname(jTextField2.getText());
+        std1.setregnum(jTextField6.getText());
+        std1.setmobile(jTextField3.getText());
+        std1.setusername(jTextField4.getText());
+        std1.setpassword(String.valueOf(jPasswordField1.getPassword()));
+        std1.setyear((int) jComboBox1.getSelectedItem());
         if(jRadioButton1.isSelected())
         {
-            gender="Male";
+            std1.setgender("Male");
         }
         else if(jRadioButton2.isSelected())
         {
-            gender="Female";
+            std1.setgender("Female");
         }
-        if(verifyFields())
+        if(verifyFields(std1))
         {
             try {
-                if(!checkUserName(username))
+                if(!checkUserName(std1.getusername()))
                 {  
                   String query="INSERT INTO `users`(`First_Name`, `Last_Name`, `Registration_Number`, `Mobile`, `Gender`, `Image`, `UserName`, `Password`) VALUES (?,?,?,?,?,?,?,?)";
                   PreparedStatement ps=null;
@@ -370,13 +371,13 @@ public class Register_Form extends javax.swing.JFrame {
                   try(Connection con=My_Connection.getconnection();)
                   {    
                       ps=con.prepareStatement(query);
-                      ps.setString(1,fname);
-                      ps.setString(2,lname);
-                      ps.setString(3,register);
-                      ps.setString(4,mobile);
-                      ps.setString(5,gender);
-                      ps.setString(7,username);
-                      ps.setString(8,password);
+                      ps.setString(1,std1.getfirstname());
+                      ps.setString(2,std1.getlastname());
+                      ps.setString(3,std1.getregnum());
+                      ps.setString(4,std1.getmobile());
+                      ps.setString(5,std1.getgender());
+                      ps.setString(7,std1.getusername());
+                      ps.setString(8,std1.getpassword());
                       if(jLabel12.getText()!="Image Path")
                       {
                       InputStream image=new FileInputStream(new File(jLabel12.getText()));
@@ -438,15 +439,11 @@ public class Register_Form extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
     //check fields are empty or not
     
-    public boolean verifyFields()
+    public boolean verifyFields(Registration std1)
     {
-        String first=jTextField1.getText();
-        String last=jTextField2.getText();
-        String regis=jTextField6.getText();
-        String mobile=jTextField3.getText();
-        String user=jTextField4.getText();
-        String password=String.valueOf(jPasswordField1.getPassword());
-        if( first.trim().equals("")||last.trim().equals("")||regis.trim().equals("")||mobile.trim().equals("")||user.trim().equals("")||password.trim().equals(""))
+        
+        if( std1.getfirstname().trim().equals("")||std1.getlastname().trim().equals("")||std1.getregnum().trim().equals("")||
+                std1.getmobile().trim().equals("")||std1.getusername().trim().equals("")||std1.getpassword().trim().equals(""))
         {
             JOptionPane.showMessageDialog(null,"One or more fields are empty","Empty Fields",2);
             return false;
