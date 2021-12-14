@@ -58,18 +58,23 @@ class ClientHandler  implements Runnable{
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         try(Connection cn=My_Connection.getconnection();){
             // add a timer to thread which kills it if client takes more than 20 seconds
-            write = new PrintWriter(s.getOutputStream(),true);
-            reader =new BufferedReader(new InputStreamReader(s.getInputStream()));
+            //write = new PrintWriter(s.getOutputStream(),true);
+            //reader =new BufferedReader(new InputStreamReader(s.getInputStream()));
+            System.out.println("val");
+            
+            ObjectOutputStream os = new ObjectOutputStream(s.getOutputStream());System.out.println("val");
+            os.flush();
+            ObjectInputStream oi = new ObjectInputStream(s.getInputStream());
             PreparedStatement st=null;
             ResultSet rs=null;
             do{
-            System.out.println("val");
-            String val= reader.readLine();
-            System.out.println("found");
-            if(val.equals("log")){
-                try{
-                        String username=reader.readLine();
-                        String password=reader.readLine();
+                int val= (int)oi.readInt();
+                System.out.println("found");
+                if(val==1){
+                    try{
+                        String username=(String)oi.readUTF();
+                        String password=(String)oi.readUTF();
+                        
                         String query="select * from users WHERE UserName=? AND Password=?";
                         st=cn.prepareStatement(query);
                         st.setString(1,username);
@@ -79,24 +84,25 @@ class ClientHandler  implements Runnable{
                       //show a new form 
                         //JOptionPane.showMessageDialog(null,"correct details","Login sucess",2);
                             System.out.println("correct");
-                            write.println("correct");
+                            os.writeUTF("correct");
+                            os.flush();
                         }
                         else{
                             //show error
                             //JOptionPane.showMessageDialog(null,"Invalid Username/Password","Login Error",2);
                             System.out.println("wrong");
-                            write.println("wrong");
+                            os.writeUTF("wrong");
+                            os.flush();
 
                         }
                     }
-                catch (Exception e){
-                    e.printStackTrace();
-                }
-                //invoke ClientClient
-                
+                    catch (Exception e){
+                        e.printStackTrace();
+                    }
+                //invoke ClientClient 
             }
-            else if(val.equals("Reg")){
-                String adre= reader.readLine();
+            else if(val==2){
+                String adre= (String)oi.readUTF();
                 System.out.println(adre+" server");
                 q.add(adre);
                 //invoke ClientSocket
@@ -110,7 +116,7 @@ class ClientHandler  implements Runnable{
         }
         
         finally{
-            write.flush();
+            //os.flush();
         }
     }
     
