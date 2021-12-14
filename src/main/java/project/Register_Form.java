@@ -43,7 +43,8 @@ public class Register_Form extends javax.swing.JFrame {
     private Socket s;
     PrintWriter write;
     BufferedReader reader;
-    ObjectInputStream oi; ObjectOutputStream os;
+    private ObjectInputStream oi; 
+    private ObjectOutputStream os;
     public Register_Form(Socket s,ObjectInputStream oi, ObjectOutputStream os) {
         initComponents();
         buttonGroup3=new ButtonGroup();
@@ -354,7 +355,7 @@ public class Register_Form extends javax.swing.JFrame {
         std1.setmobile(Mno.getText());
         std1.setusername(Username.getText());
         std1.setpassword(String.valueOf(pass.getPassword()));
-        std1.setyear((int) jComboBox1.getSelectedItem());
+        //std1.setyear((int) jComboBox1.getSelectedItem());
         if(jRadioButton1.isSelected())
         {
             std1.setgender("Male");
@@ -368,7 +369,7 @@ public class Register_Form extends javax.swing.JFrame {
             try {
                 if(!checkUserName(std1.getusername()))
                 {  
-                  String query="INSERT INTO `users`(`First_Name`, `Last_Name`, `Registration_Number`, `Mobile`, `Gender`, `Image`, `UserName`, `Password`) VALUES (?,?,?,?,?,?,?,?)";
+                  String query="INSERT INTO users (`First_Name`, `Last_Name`, `Registration_Number`, `Mobile`, `Gender`, `Image`, `UserName`, `Password`) VALUES (?,?,?,?,?,?,?,?)";
                   PreparedStatement ps=null;
                   ResultSet rs=null;
                   try(Connection con=My_Connection.getconnection();)
@@ -394,7 +395,7 @@ public class Register_Form extends javax.swing.JFrame {
                       {
                          JOptionPane.showMessageDialog(null,"Your Account Has Been Created"); 
                          dispose();
-                         NewJFrame njf= new NewJFrame();
+                         NewJFrame njf= new NewJFrame(s);
                           njf.setVisible(true);
                       }
                       else

@@ -427,7 +427,7 @@ class NewJFrame extends javax.swing.JFrame {
     private void regMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_regMouseClicked
         // TODO add your handling code here:
         try{
-            Register_Form rf =new Register_Form();
+            Register_Form rf =new Register_Form(s,oi,os);
         this.dispose();
         os.flush();
         os.writeInt(2);
