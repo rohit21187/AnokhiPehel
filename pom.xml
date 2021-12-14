@@ -2,7 +2,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.lasercodes</groupId>
+    <groupId>project</groupId>
     <artifactId>mavenproject1</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
@@ -15,11 +15,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-<<<<<<< HEAD
             <version>8.0.26</version>
-=======
-            <version>8.0.22</version>
->>>>>>> 8a93db0ff776969f65e9f6051b0035524309796e
         </dependency>
     </dependencies>
     <properties>
