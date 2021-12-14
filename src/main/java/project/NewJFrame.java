@@ -7,6 +7,9 @@ package project;
 
 import java.awt.Color;
 import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import javax.swing.BorderFactory;
@@ -27,18 +30,24 @@ class NewJFrame extends javax.swing.JFrame {
     private Socket s;
     PrintWriter write;
     BufferedReader reader;
-    public NewJFrame(Socket s,PrintWriter write,BufferedReader reader) {
+    ObjectInputStream oi;
+    ObjectOutputStream os;
+    public NewJFrame(Socket s) throws IOException {
         initComponents();
         jPasswordField1.setEchoChar((char)0);//for show password as char not as a *
         ToolTipManager.sharedInstance().setEnabled(false);
         Border j=BorderFactory.createMatteBorder(2, 3, 3, 3, Color.WHITE);
         jPasswordField1.setBorder(j);
         jTextField_username.setBorder(j);
-        this.s=s;
-        this.write=write;
-        this.reader= reader;
-         setVisible(true);
-        
+        System.out.println("in jframe");
+        this.s=s;System.out.println("in jframe");
+        //this.oi = new ObjectInputStream(s.getInputStream());System.out.println("in jframe");
+        //this.os = new ObjectOutputStream(s.getOutputStream());System.out.println("in jframe");
+        setVisible(true);
+        System.out.println("out jframe");
+        oi = new ObjectInputStream(s.getInputStream());System.out.println("val");
+        os = new ObjectOutputStream(s.getOutputStream());
+        os.flush();
     }
     public NewJFrame() {
         initComponents();
@@ -385,12 +394,19 @@ class NewJFrame extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         try{
-            write.println("log");
+            System.out.println("log");
+            
+            os.flush();
+            
+            System.out.println("log");
+            String s="log";
+            os.writeInt(1);
+            os.flush();
                 String username=jTextField_username.getText();
                 String password=String.valueOf(jPasswordField1.getPassword());
-                write.println(username);
-                write.println(password);
-                String res = reader.readLine();
+                os.writeUTF(username);os.flush();
+                os.writeUTF(password);os.flush();
+                String res = (String)oi.readUTF();
                 if(res.equals("correct")){
                   //show a new form 
                     JOptionPane.showMessageDialog(null,"correct details","Login sucess",2);
@@ -411,8 +427,9 @@ class NewJFrame extends javax.swing.JFrame {
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
         // TODO add your handling code here:
         try{
-        write.println("Reg");
-        Register_Form rf=new Register_Form(s,write,reader);
+        os.flush();
+        os.writeInt(2);
+        Register_Form rf=new Register_Form(s,oi,os);
         this.dispose();
         }
         catch(Exception e){
