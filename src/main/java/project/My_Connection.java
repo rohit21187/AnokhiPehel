@@ -3,12 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-<<<<<<< HEAD:src/main/java/com/lasercodes/mavenproject1/My_Connection.java
-package com.lasercodes.mavenproject1;
-import mavenproject1.*;
-=======
+
+import project.*;
 package project;
->>>>>>> 8a93db0ff776969f65e9f6051b0035524309796e:src/main/java/project/My_Connection.java
 import java.sql.*;
 /**
  *

@@ -3,14 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-<<<<<<< HEAD:src/main/java/com/lasercodes/mavenproject1/Register_Form.java
-package com.lasercodes.mavenproject1;
-import mavenproject1.*;
-=======
+
 package project;
 import java.awt.Color;
 import java.io.BufferedReader;
->>>>>>> 8a93db0ff776969f65e9f6051b0035524309796e:src/main/java/project/Register_Form.java
+//>>>>>>> 8a93db0ff776969f65e9f6051b0035524309796e:src/main/java/project/Register_Form.java
 import java.sql.*;
 import java.io.File;
 import java.io.FileInputStream;
