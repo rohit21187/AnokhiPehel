@@ -68,8 +68,9 @@ class ClientHandler  implements Runnable{
             PreparedStatement st=null;
             ResultSet rs=null;
             do{
+                System.out.println("val");
                 int val= (int)oi.readInt();
-                System.out.println("found");
+                System.out.println(val);
                 if(val==1){
                     try{
                         String username=(String)oi.readUTF();
@@ -102,9 +103,9 @@ class ClientHandler  implements Runnable{
                 //invoke ClientClient 
             }
             else if(val==2){
-                String adre= (String)oi.readUTF();
-                System.out.println(adre+" server");
-                q.add(adre);
+                //String adre= (String)oi.readUTF();
+                System.out.println(" server");
+                //q.add(adre);
                 //invoke ClientSocket
             }
             //s.close();
