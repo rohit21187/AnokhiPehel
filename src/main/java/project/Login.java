@@ -11,6 +11,11 @@ package project;
  */
 public class Login {
     private String username,password;
+
+    public Login(String username, String password) {
+        this.username= username;
+        this.password= password;
+    }
     public void setuser(String s)
     {
         this.username=s;
@@ -19,11 +24,11 @@ public class Login {
     {
         this.password=s;
     }
-    public String getuser()
+    protected String getUser()
     {
         return this.username;
     }
-    public String getpassword()
+    protected String getPassword()
     {
         return this.password;
     }

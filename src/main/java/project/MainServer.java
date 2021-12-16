@@ -16,6 +16,8 @@ import java.io.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -39,6 +41,10 @@ public class MainServer {
         }
     }
 }
+//create unicon to check whether username is already present in database
+    
+    
+    
 class ClientHandler  implements Runnable{
     
     public static Queue<String> q = new LinkedList<String>();
@@ -49,7 +55,74 @@ class ClientHandler  implements Runnable{
         t= new Thread(this);
         t.start();
     }
+    private  int LoginVerify(Login lg,Connection cn) throws SQLException{
+        PreparedStatement st=null;
+        ResultSet rs=null;
+        String query="select * from users WHERE UserName=? AND Password=?";
+        st=cn.prepareStatement(query);
+        st.setString(1,lg.getUser());
+        st.setString(2,lg.getPassword());
+        rs=st.executeQuery();
+        if(rs.next()){
+            return 1; //correct detail  
+        }
+        else{
+            return 0; // incorrect detail;
+        }
+    }
+    private boolean CheckUserName(String username) throws SQLException{
+        PreparedStatement ps=null;
+        ResultSet rs=null;
+        boolean username_exist=false;
+        try(Connection con=My_Connection.getconnection();){
+            
+            String query="select * from users where UserName=?";
+            ps=con.prepareStatement(query);
+            ps.setString(1, username);
+            rs=ps.executeQuery();
+            if(rs.next())
+            {
+               username_exist=true;
+               //JOptionPane.showMessageDialog(null,"This UserName is Already Taken, Choose Another One","UserName Failed",2);
+            }
+            return username_exist;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return username_exist;
+    }
+    private int RegisterUserInDB(Registration std1,Connection cn) throws SQLException{
+        String query="INSERT INTO users (`First_Name`, `Last_Name`, `Registration_Number`, `Mobile`, `Gender`, `Image`, `UserName`, `Password`) VALUES (?,?,?,?,?,?,?,?)";
+        PreparedStatement ps=null;
+        ResultSet rs=null;    
+        ps=cn.prepareStatement(query);
+        ps.setString(1,std1.getfirstname());
+        ps.setString(2,std1.getlastname());
+        ps.setString(3,std1.getregnum());
+        ps.setString(4,std1.getmobile());
+        ps.setString(5,std1.getgender());
+        ps.setString(7,std1.getusername());
+        ps.setString(8,std1.getpassword());
+        /*if(jLabel12.getText()!="Image Path")
+        {
+        InputStream image=new FileInputStream(new File(jLabel12.getText()));
+        ps.setBlob(6,image);
+        }
+        else
+        {
+        ps.setNull(6,java.sql.Types.NULL);
+        }*/
+        if(ps.executeUpdate()!=0){
+           return 1;
+        }
+        else{
+            return 0;
 
+        } 
+    }
+    
     @Override
     public void run() {
         
@@ -73,28 +146,17 @@ class ClientHandler  implements Runnable{
                 System.out.println(val);
                 if(val==1){
                     try{
-                        String username=(String)oi.readUTF();
-                        String password=(String)oi.readUTF();
-                        
-                        String query="select * from users WHERE UserName=? AND Password=?";
-                        st=cn.prepareStatement(query);
-                        st.setString(1,username);
-                        st.setString(2,password);
-                        rs=st.executeQuery();
-                        if(rs.next()){
-                      //show a new form 
-                        //JOptionPane.showMessageDialog(null,"correct details","Login sucess",2);
+                        Login lg =(Login)oi.readObject();
+                        int check= LoginVerify(lg,cn);
+                        if(check==1){
                             System.out.println("correct");
                             os.writeUTF("correct");
                             os.flush();
                         }
                         else{
-                            //show error
-                            //JOptionPane.showMessageDialog(null,"Invalid Username/Password","Login Error",2);
                             System.out.println("wrong");
                             os.writeUTF("wrong");
                             os.flush();
-
                         }
                     }
                     catch (Exception e){
@@ -105,8 +167,14 @@ class ClientHandler  implements Runnable{
             else if(val==2){
                 //String adre= (String)oi.readUTF();
                 System.out.println(" server");
-                //q.add(adre);
-                //invoke ClientSocket
+                Registration std= (Registration)oi.readObject();
+                if(CheckUserName(std.getusername())){
+                    os.writeInt(1);
+                    os.writeInt(RegisterUserInDB(std,cn));
+                }
+                else{
+                    os.writeInt(0);
+                }
             }
             //s.close();
         }while(!rs.next());

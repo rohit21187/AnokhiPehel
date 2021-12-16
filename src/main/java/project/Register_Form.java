@@ -355,62 +355,35 @@ public class Register_Form extends javax.swing.JFrame {
         std1.setmobile(Mno.getText());
         std1.setusername(Username.getText());
         std1.setpassword(String.valueOf(pass.getPassword()));
-        //std1.setyear((int) jComboBox1.getSelectedItem());
-        if(jRadioButton1.isSelected())
-        {
+        std1.setyear((int) jComboBox1.getSelectedItem());
+        if(jRadioButton1.isSelected()){
             std1.setgender("Male");
         }
-        else if(jRadioButton2.isSelected())
-        {
+        else if(jRadioButton2.isSelected()){
             std1.setgender("Female");
         }
-        if(verifyFields(std1))
-        {
-            try {
-                if(!checkUserName(std1.getusername()))
-                {  
-                  String query="INSERT INTO users (`First_Name`, `Last_Name`, `Registration_Number`, `Mobile`, `Gender`, `Image`, `UserName`, `Password`) VALUES (?,?,?,?,?,?,?,?)";
-                  PreparedStatement ps=null;
-                  ResultSet rs=null;
-                  try(Connection con=My_Connection.getconnection();)
-                  {    
-                      ps=con.prepareStatement(query);
-                      ps.setString(1,std1.getfirstname());
-                      ps.setString(2,std1.getlastname());
-                      ps.setString(3,std1.getregnum());
-                      ps.setString(4,std1.getmobile());
-                      ps.setString(5,std1.getgender());
-                      ps.setString(7,std1.getusername());
-                      ps.setString(8,std1.getpassword());
-                      if(jLabel12.getText()!="Image Path")
-                      {
-                      InputStream image=new FileInputStream(new File(jLabel12.getText()));
-                      ps.setBlob(6,image);
-                      }
-                      else
-                      {
-                      ps.setNull(6,java.sql.Types.NULL);
-                      }
-                      if(ps.executeUpdate()!=0)
-                      {
-                         JOptionPane.showMessageDialog(null,"Your Account Has Been Created"); 
-                         dispose();
-                         NewJFrame njf= new NewJFrame(s);
-                          njf.setVisible(true);
-                      }
-                      else
-                      {
-                           JOptionPane.showMessageDialog(null,"Error Check Your Information"); 
-                      }
-                     
-                  }
-                  catch (Exception e) {
-                e.printStackTrace();
-            }
+        if(verifyFields(std1)){
+            try{
+                os.writeObject(std1);
+                if(oi.readInt()==1){
+                    if(oi.readInt()==1){
+                        JOptionPane.showMessageDialog(null,"Your Account Has Been Created"); 
+                        dispose();
+                        NewJFrame njf= new NewJFrame(this.s);
+                        njf.setVisible(true);
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null,"Error Check Your Information"); 
+                    }
                 }
-            } catch (Exception e) {
+                else{
+                    JOptionPane.showMessageDialog(null,"Username already taken check for another");
+                }
+            }
+            catch(Exception e){
                 e.printStackTrace();
             }
+            
         }
     }//GEN-LAST:event_submitActionPerformed
 
@@ -461,32 +434,6 @@ public class Register_Form extends javax.swing.JFrame {
        return true;
     }
     
-    //create unicon to check whether username is already present in database
-    
-    public boolean checkUserName(String username) throws SQLException
-    {
-        PreparedStatement ps=null;
-        ResultSet rs=null;
-        boolean username_exist=false;
-        try(Connection con=My_Connection.getconnection();)
-        {
-            
-            String query="select * from users where UserName=?";
-            ps=con.prepareStatement(query);
-            ps.setString(1, username);
-            rs=ps.executeQuery();
-            if(rs.next())
-            {
-               username_exist=true;
-               JOptionPane.showMessageDialog(null,"This UserName is Already Taken, Choose Another One","UserName Failed",2);
-            }
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-        return username_exist;
-    }
     
     
     

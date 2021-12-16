@@ -404,8 +404,9 @@ class NewJFrame extends javax.swing.JFrame {
             os.flush();
                 String username=jTextField_username.getText();
                 String password=String.valueOf(jPasswordField1.getPassword());
-                os.writeUTF(username);os.flush();
-                os.writeUTF(password);os.flush();
+                Login Ldata= new Login(username,password);
+                
+                os.writeObject(Ldata);os.flush();
                 String res = (String)oi.readUTF();os.flush();
                 if(res.equals("correct")){
                   //show a new form 
