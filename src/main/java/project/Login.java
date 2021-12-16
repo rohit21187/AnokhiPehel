@@ -5,11 +5,13 @@
  */
 package project;
 
+import java.io.Serializable;
+
 /**
  *
  * @author hp
  */
-public class Login {
+public class Login implements Serializable {
     private String username,password;
 
     public Login(String username, String password) {

@@ -355,7 +355,19 @@ public class Register_Form extends javax.swing.JFrame {
         std1.setmobile(Mno.getText());
         std1.setusername(Username.getText());
         std1.setpassword(String.valueOf(pass.getPassword()));
-        std1.setyear((int) jComboBox1.getSelectedItem());
+        if(jComboBox1.getSelectedItem().equals("1")){
+            std1.setyear(1);
+        }
+        else if(jComboBox1.getSelectedItem().equals("2")){
+            std1.setyear(2);
+        }
+        else if(jComboBox1.getSelectedItem().equals("3")){
+            std1.setyear(3);
+        }
+        else if(jComboBox1.getSelectedItem().equals("4")) {
+            std1.setyear(4);
+        }
+        //std1.setyear((int) );
         if(jRadioButton1.isSelected()){
             std1.setgender("Male");
         }
@@ -365,11 +377,16 @@ public class Register_Form extends javax.swing.JFrame {
         if(verifyFields(std1)){
             try{
                 os.writeObject(std1);
-                if(oi.readInt()==1){
-                    if(oi.readInt()==1){
+                os.flush();
+                int Check_UserName=(int)oi.readInt();
+                System.out.println(Check_UserName+"Check user");
+                if(Check_UserName==1){
+                    int Check_AccountStatus=(int)oi.readInt();
+                    System.out.println(Check_AccountStatus+"Check_AccountStatus");
+                    if(Check_AccountStatus==1){
                         JOptionPane.showMessageDialog(null,"Your Account Has Been Created"); 
-                        dispose();
-                        NewJFrame njf= new NewJFrame(this.s);
+                        this.dispose();
+                        NewJFrame njf= new NewJFrame(this.s,oi,os);
                         njf.setVisible(true);
                     }
                     else{

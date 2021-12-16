@@ -20,10 +20,10 @@ public class Main {
         Socket s = new Socket("localhost",3001);
         //write.print("host");
         System.out.println("before main");
-        //ObjectInputStream oi = new ObjectInputStream(s.getInputStream());
-        //ObjectOutputStream os = new ObjectOutputStream(s.getOutputStream());
+        ObjectInputStream oi = new ObjectInputStream(s.getInputStream());
+        ObjectOutputStream os = new ObjectOutputStream(s.getOutputStream());
         //System.out.println("in main");
-        NewJFrame njf= new NewJFrame(s);
+        NewJFrame njf= new NewJFrame(s,oi,os);
         System.out.println("in main");
         njf.setVisible(true);
         

@@ -17,6 +17,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -70,10 +72,10 @@ class ClientHandler  implements Runnable{
             return 0; // incorrect detail;
         }
     }
-    private boolean CheckUserName(String username) throws SQLException{
+    private int CheckUserName(String username) throws SQLException{
         PreparedStatement ps=null;
         ResultSet rs=null;
-        boolean username_exist=false;
+        int username_exist=1;
         try(Connection con=My_Connection.getconnection();){
             
             String query="select * from users where UserName=?";
@@ -82,10 +84,10 @@ class ClientHandler  implements Runnable{
             rs=ps.executeQuery();
             if(rs.next())
             {
-               username_exist=true;
+               username_exist=0;
                //JOptionPane.showMessageDialog(null,"This UserName is Already Taken, Choose Another One","UserName Failed",2);
             }
-            return username_exist;
+            return username_exist; //returns 1 when not present
         }
         catch(Exception e)
         {
@@ -105,6 +107,7 @@ class ClientHandler  implements Runnable{
         ps.setString(5,std1.getgender());
         ps.setString(7,std1.getusername());
         ps.setString(8,std1.getpassword());
+        ps.setNull(6,java.sql.Types.NULL);
         /*if(jLabel12.getText()!="Image Path")
         {
         InputStream image=new FileInputStream(new File(jLabel12.getText()));
@@ -168,20 +171,33 @@ class ClientHandler  implements Runnable{
                 //String adre= (String)oi.readUTF();
                 System.out.println(" server");
                 Registration std= (Registration)oi.readObject();
-                if(CheckUserName(std.getusername())){
+                System.out.println("read reg obj");
+                int cu= CheckUserName(std.getusername());
+                if(cu==1){
+                    System.out.println("checked user");
                     os.writeInt(1);
+                    os.flush();
+                    System.out.println("registering");
                     os.writeInt(RegisterUserInDB(std,cn));
+                    System.out.println("Registered");
+                    os.flush();
+                    
                 }
                 else{
                     os.writeInt(0);
+                    os.flush();
                 }
             }
             //s.close();
-        }while(!rs.next());
-            s.close();
+        }while(true);
         }
         catch(Exception ep){
             ep.printStackTrace();
+            try {
+                s.close();
+            } catch (IOException ex) {
+                Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         
         finally{

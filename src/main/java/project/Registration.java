@@ -5,11 +5,13 @@
  */
 package project;
 
+import java.io.Serializable;
+
 /**
  *
  * @author hp
  */
-public class Registration {
+public class Registration implements Serializable  {
     private String first_name,last_name,password,gender,username, registration_number,mobile;
     private int year;
     public void setfirstname(String s)

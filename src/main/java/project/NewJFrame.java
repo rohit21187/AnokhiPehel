@@ -30,24 +30,23 @@ class NewJFrame extends javax.swing.JFrame {
     private Socket s;
     PrintWriter write;
     BufferedReader reader;
-    ObjectInputStream oi;
-    ObjectOutputStream os;
-    public NewJFrame(Socket s) throws IOException {
+    private ObjectInputStream oi;
+    private ObjectOutputStream os;
+    public NewJFrame(Socket s,ObjectInputStream oi, ObjectOutputStream os) throws IOException {
         initComponents();
         jPasswordField1.setEchoChar((char)0);//for show password as char not as a *
         ToolTipManager.sharedInstance().setEnabled(false);
         Border j=BorderFactory.createMatteBorder(2, 3, 3, 3, Color.WHITE);
         jPasswordField1.setBorder(j);
         jTextField_username.setBorder(j);
-        System.out.println("in jframe");
-        this.s=s;System.out.println("in jframe");
+        //System.out.println("in jframe");
+        this.s=s;
         //this.oi = new ObjectInputStream(s.getInputStream());System.out.println("in jframe");
         //this.os = new ObjectOutputStream(s.getOutputStream());System.out.println("in jframe");
         setVisible(true);
         System.out.println("out jframe");
-        oi = new ObjectInputStream(s.getInputStream());System.out.println("val");
-        os = new ObjectOutputStream(s.getOutputStream());
-        os.flush();
+        this.oi = oi;System.out.println("val");
+        this.os = os;System.out.println("out of constructor");
     }
     public NewJFrame() {
         initComponents();
@@ -394,11 +393,7 @@ class NewJFrame extends javax.swing.JFrame {
     private void loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginActionPerformed
         // TODO add your handling code here:
         try{
-            System.out.println("log");
-            
-            os.flush();
-            
-            System.out.println("log");
+            System.out.println("log1");
             String s="log";
             os.writeInt(1);
             os.flush();
@@ -429,7 +424,7 @@ class NewJFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         try{
             Register_Form rf =new Register_Form(s,oi,os);
-        this.dispose();
+        this.setVisible(false);
         os.flush();
         os.writeInt(2);
         os.flush();
