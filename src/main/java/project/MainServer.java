@@ -49,7 +49,7 @@ public class MainServer {
     
 class ClientHandler  implements Runnable{
     
-    public static Queue<String> q = new LinkedList<String>();
+    //public static Queue<String> q = new LinkedList<String>();
     Thread t;
     Socket s;
     public ClientHandler(Socket s){
@@ -129,8 +129,8 @@ class ClientHandler  implements Runnable{
     @Override
     public void run() {
         
-        PrintWriter write=null;
-        BufferedReader reader=null;
+        //PrintWriter write=null;
+        //BufferedReader reader=null;
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         try(Connection cn=My_Connection.getconnection();){
             // add a timer to thread which kills it if client takes more than 20 seconds

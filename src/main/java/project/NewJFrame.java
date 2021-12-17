@@ -393,7 +393,7 @@ class NewJFrame extends javax.swing.JFrame {
     private void loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginActionPerformed
         // TODO add your handling code here:
         try{
-            System.out.println("log1");
+            //System.out.println("log1");
             String s="log";
             os.writeInt(1);
             os.flush();
