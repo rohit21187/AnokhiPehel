@@ -446,8 +446,6 @@ class NewJFrame extends javax.swing.JFrame {
             Register_Form rf =new Register_Form(s,oi,os);
             this.setVisible(false);
             os.flush();
-            os.writeInt(2);
-            os.flush();
         
         }
         catch(Exception e){

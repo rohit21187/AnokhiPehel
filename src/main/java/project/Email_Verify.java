@@ -19,14 +19,13 @@ import javax.mail.internet.MimeMessage;
  * @author hp
  */
 public class Email_Verify {
-    
-    public Email_Verify()
-    {
+    private static String Email="meenakshiparihar789@gmail.com",pass="Chilllite789";
+    public Email_Verify(String dest,String otp){
      System.out.println("preparing");
-     String message="Hello , dear this is message for security check";    
-     String subject="CodesArea : Confirmation";
-       String to="minakshi.20190032@mnnit.ac.in";
-       String from="meenakshiparihar789@gmail.com";
+     String message="Hello , User this is your otp for email verification "+otp;    
+     String subject="Email : Confirmation";
+       String to=  dest;//"minakshi.20190032@mnnit.ac.in";
+       String from=Email;
       sendEmail(message,subject,to,from);
         
     }
@@ -48,7 +47,7 @@ public class Email_Verify {
            @Override
            protected PasswordAuthentication getPasswordAuthentication()
            {
-               return new PasswordAuthentication("meenakshiparihar789@gmail.com","Chilllite789");
+               return new PasswordAuthentication(Email,pass);
            }
        }
        );

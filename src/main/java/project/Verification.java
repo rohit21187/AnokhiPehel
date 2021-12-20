@@ -5,6 +5,17 @@
  */
 package project;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ButtonGroup;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author hp
@@ -14,6 +25,18 @@ public class Verification extends javax.swing.JFrame {
     /**
      * Creates new form Verification
      */
+    private Socket s;
+    PrintWriter write;
+    BufferedReader reader;
+    private ObjectInputStream oi; 
+    private ObjectOutputStream os;
+    public Verification(Socket s,ObjectInputStream oi, ObjectOutputStream os) {
+        initComponents();
+        this.s=s;
+        this.os=os;
+        this.oi=oi;
+        setVisible(true);
+    }
     public Verification() {
         initComponents();
     }
@@ -30,7 +53,7 @@ public class Verification extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        Submit = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -40,8 +63,13 @@ public class Verification extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("We have sent you a verification code on your ID ");
 
-        jButton1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jButton1.setText("OK");
+        Submit.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        Submit.setText("OK");
+        Submit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SubmitActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -57,7 +85,7 @@ public class Verification extends javax.swing.JFrame {
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(213, 213, 213)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(Submit, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(85, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -68,7 +96,7 @@ public class Verification extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(33, 33, 33)
-                .addComponent(jButton1)
+                .addComponent(Submit)
                 .addContainerGap(158, Short.MAX_VALUE))
         );
 
@@ -85,6 +113,37 @@ public class Verification extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void SubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SubmitActionPerformed
+        try {
+            // TODO add your handling code here:
+            os.writeInt(3); //server starts veriying
+            os.flush();
+            os.writeUTF(jTextField1.getText());
+            os.flush();
+            int val =(int)oi.readInt();
+            if(val==1){
+                JOptionPane.showMessageDialog(null,"Your Account Has Been Created"); 
+                new NewJFrame(this.s,this.oi,this.os).toFront();
+                this.dispose();
+            }
+            else if(val==2){
+                JOptionPane.showMessageDialog(null,"Incorrect try again"); 
+            }
+            else if(val==-1){
+                JOptionPane.showMessageDialog(null,"You have tried all 3 chances Please try after some time"); 
+               new NewJFrame(this.s,this.oi,this.os).toFront();
+                this.dispose();
+            }
+            else{
+               JOptionPane.showMessageDialog(null,"Something went wrong Please try after some time"); 
+               new NewJFrame(this.s,this.oi,this.os).toFront();
+                this.dispose();
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Verification.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_SubmitActionPerformed
 
     /**
      * @param args the command line arguments
@@ -122,7 +181,7 @@ public class Verification extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton Submit;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextField1;

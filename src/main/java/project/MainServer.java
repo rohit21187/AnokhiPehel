@@ -50,8 +50,11 @@ public class MainServer {
 class ClientHandler  implements Runnable{
     
     //public static Queue<String> q = new LinkedList<String>();
-    Thread t;
-    Socket s;
+    private Thread t;
+    private Socket s;
+    private int VerificationTimes=0,loginVerified=0;
+    private Registration std;
+    private String otp;
     public ClientHandler(Socket s){
         this.s=s;
         t= new Thread(this);
@@ -125,7 +128,18 @@ class ClientHandler  implements Runnable{
 
         } 
     }
-    
+    private void OTPSetter(){
+         Random rnd = new Random();
+        int number = rnd.nextInt(999999);
+        this.otp=String.format("%06d", number);
+        System.out.println(this.otp);
+    }
+    private int OTPChecker(String s) {
+        if(s.equals(this.otp)){
+            return 1;
+        }
+        return 0;
+    }
     @Override
     public void run() {
         
@@ -143,6 +157,7 @@ class ClientHandler  implements Runnable{
             ObjectInputStream oi = new ObjectInputStream(s.getInputStream());
             PreparedStatement st=null;
             ResultSet rs=null;
+            
             do{
                 System.out.println("val");
                 int val= (int)oi.readInt();
@@ -168,25 +183,38 @@ class ClientHandler  implements Runnable{
                 //invoke ClientClient 
             }
             else if(val==2){
-                //String adre= (String)oi.readUTF();
-                System.out.println(" server");
-                Registration std= (Registration)oi.readObject();
-                System.out.println("read reg obj");
+                this.std = (Registration)oi.readObject(); //reading user details//System.out.println("read reg obj");
                 int cu= CheckUserName(std.getusername());
-                if(cu==1){
-                    System.out.println("checked user");
+                if(cu==1){//System.out.println("checked user");
                     os.writeInt(1);
-                    os.flush();
-                    System.out.println("registering");
-                    os.writeInt(RegisterUserInDB(std,cn));
-                    System.out.println("Registered");
-                    os.flush();
-                    
+                    os.flush();//System.out.println("registering"); 
+                    this.VerificationTimes=3;
+                    OTPSetter(); //sets the otp
+                    //new Email_Verify(this.std.getusername(),this.otp);//email sent
                 }
                 else{
                     os.writeInt(0);
                     os.flush();
                 }
+            }
+            else if(val==3){
+                this.VerificationTimes--;
+                if(this.VerificationTimes>0){
+                    String s=oi.readUTF();
+                    if(OTPChecker(s)==1){
+                        os.writeInt(RegisterUserInDB(std,cn));//System.out.println("Registered");
+                        os.flush();
+                    }
+                    else{
+                        os.writeInt(2);
+                        os.flush();
+                    }
+                }
+                else{
+                    os.writeInt(-1); //no more chances left
+                    os.flush();
+                }
+                
             }
             //s.close();
         }while(true);
@@ -204,5 +232,7 @@ class ClientHandler  implements Runnable{
             //os.flush();
         }
     }
+
+    
     
 }

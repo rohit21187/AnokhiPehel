@@ -13,6 +13,7 @@ import java.io.BufferedReader;
 import java.sql.*;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -348,6 +349,10 @@ public class Register_Form extends javax.swing.JFrame {
 
     private void submitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitActionPerformed
         // TODO add your handling code here:
+        try{
+        os.flush();
+        os.writeInt(2);
+        
         Registration std1=new Registration();
         std1.setfirstname(Fname.getText());
         std1.setlastname(Lname.getText());
@@ -378,20 +383,11 @@ public class Register_Form extends javax.swing.JFrame {
             try{
                 os.writeObject(std1);
                 os.flush();
-                int Check_UserName=(int)oi.readInt();
-                System.out.println(Check_UserName+"Check user");
+                int Check_UserName=(int)oi.readInt();//System.out.println(Check_UserName+"Check user");
                 if(Check_UserName==1){
-                    int Check_AccountStatus=(int)oi.readInt();
-                    System.out.println(Check_AccountStatus+"Check_AccountStatus");
-                    if(Check_AccountStatus==1){
-                        JOptionPane.showMessageDialog(null,"Your Account Has Been Created"); 
-                        
-                        new NewJFrame(this.s,this.oi,this.os).toFront();
-                        this.dispose();
-                    }
-                    else{
-                        JOptionPane.showMessageDialog(null,"Error Check Your Information"); 
-                    }
+
+                    new Verification(this.s,this.oi,this.os).toFront();
+                    this.dispose();
                 }
                 else{
                     JOptionPane.showMessageDialog(null,"Username already taken check for another");
@@ -401,6 +397,10 @@ public class Register_Form extends javax.swing.JFrame {
                 e.printStackTrace();
             }
             
+        }
+        } 
+        catch (IOException ex) {
+            Logger.getLogger(Register_Form.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_submitActionPerformed
 
