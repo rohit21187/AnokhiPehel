@@ -385,9 +385,9 @@ public class Register_Form extends javax.swing.JFrame {
                     System.out.println(Check_AccountStatus+"Check_AccountStatus");
                     if(Check_AccountStatus==1){
                         JOptionPane.showMessageDialog(null,"Your Account Has Been Created"); 
+                        
+                        new NewJFrame(this.s,this.oi,this.os).toFront();
                         this.dispose();
-                        NewJFrame njf= new NewJFrame(this.s,oi,os);
-                        njf.setVisible(true);
                     }
                     else{
                         JOptionPane.showMessageDialog(null,"Error Check Your Information"); 

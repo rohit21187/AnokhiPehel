@@ -5,21 +5,41 @@
  */
 package project;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author hp
  */
-public class ForgotPassword extends javax.swing.JFrame {
+class ForgotPassword extends javax.swing.JFrame {
 
     /**
      * Creates new form ForgotPassword
      */
-    public ForgotPassword() {
+     private Socket s;
+    private ObjectInputStream oi;
+    private ObjectOutputStream os;
+    Thread t;
+    public ForgotPassword(Socket s,ObjectInputStream oi, ObjectOutputStream os) throws IOException {
+        initComponents();
+        this.s=s;
+        setVisible(true);
+        this.oi = oi;System.out.println("val");
+        this.os = os;System.out.println("out of constructor");
+        
+    }
+    public ForgotPassword(){
         initComponents();
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -33,6 +53,7 @@ public class ForgotPassword extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         username = new javax.swing.JTextField();
         ok = new javax.swing.JButton();
+        Back = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -50,6 +71,13 @@ public class ForgotPassword extends javax.swing.JFrame {
             }
         });
 
+        Back.setText("Back");
+        Back.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BackActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -63,7 +91,9 @@ public class ForgotPassword extends javax.swing.JFrame {
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(202, 202, 202)
-                        .addComponent(ok, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(ok, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(43, 43, 43)
+                        .addComponent(Back)))
                 .addContainerGap(173, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -74,7 +104,9 @@ public class ForgotPassword extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(ok)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ok)
+                    .addComponent(Back))
                 .addContainerGap(122, Short.MAX_VALUE))
         );
 
@@ -103,6 +135,20 @@ public class ForgotPassword extends javax.swing.JFrame {
             
         }
     }//GEN-LAST:event_okActionPerformed
+
+    private void BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackActionPerformed
+        // TODO add your handling code here:
+        this.toBack();
+        this.dispose();
+         try {
+             new NewJFrame(this.s,this.oi,this.os).toFront();
+         } catch (IOException ex) {
+             Logger.getLogger(ForgotPassword.class.getName()).log(Level.SEVERE, null, ex);
+         }
+         this.toFront();
+        
+        
+    }//GEN-LAST:event_BackActionPerformed
 
     /**
      * @param args the command line arguments
@@ -140,9 +186,12 @@ public class ForgotPassword extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Back;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton ok;
     private javax.swing.JTextField username;
     // End of variables declaration//GEN-END:variables
+
+    
 }
