@@ -21,15 +21,15 @@ public class MainPage extends javax.swing.JFrame {
      * Creates new form MainPage
      */
     private Socket s;
-    private BufferedReader br;
-    private PrintWriter pw;
-    public MainPage(Socket s,BufferedReader br,PrintWriter pw) {
+    private ObjectInputStream oi;
+    private ObjectOutputStream os;
+    public MainPage(Socket s,ObjectInputStream oi, ObjectOutputStream os) {
         initComponents();
         setLocationRelativeTo(null);
         setVisible(true);
         this.s=s;
-        this.br=br;
-        this.pw=pw;
+        this.oi=oi;
+        this.os=os;
         
     }
     public MainPage()
@@ -376,11 +376,16 @@ public class MainPage extends javax.swing.JFrame {
 
     private void chatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_chatMouseClicked
         // TODO add your handling code here:
-        
-        ChatPage cp=new ChatPage(this.s,this.br,this.pw);
-        pw.write(4);
-        pw.flush();
+        try{
+        ChatPage cp=new ChatPage(this.s,this.oi,this.os);
+        os.write(4);
+        os.flush();
         this.setVisible(false);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
         
         
         

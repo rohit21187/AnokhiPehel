@@ -15,9 +15,9 @@ import javax.swing.ImageIcon;
  * @author hp
  */
 public class ChatPage extends javax.swing.JFrame {
-    Socket socket=null;
-    BufferedReader br;
-    PrintWriter pw;
+    private Socket socket=null;
+    private ObjectInputStream oi;
+    private ObjectOutputStream os;
     /**
      * Creates new form ChatPage
      */
@@ -25,7 +25,7 @@ public class ChatPage extends javax.swing.JFrame {
     {
        initComponents(); 
     }
-    public ChatPage(Socket s,BufferedReader br,PrintWriter pw) {
+    public ChatPage(Socket s,ObjectInputStream oi, ObjectOutputStream os) {
         setUndecorated(true);
         initComponents();
         setLocationRelativeTo(null);
@@ -49,13 +49,12 @@ public class ChatPage extends javax.swing.JFrame {
        try{
       
       this.socket=s;
-      this.br=br;
-      this.pw=pw;
+      this.oi=oi;
+      this.os=os;
       
       puttext.setLineWrap(true);
       puttext.setWrapStyleWord(true);
       startReading();
-      
        }
        catch(Exception e)
        {
@@ -66,9 +65,9 @@ public class ChatPage extends javax.swing.JFrame {
         private void startReading()
         {
             try{
-                while(true)
+                while(!socket.isClosed())
                 {
-                    String msg=this.br.readLine();
+                    String msg=this.oi.readUTF();
                     puttext.append("Server :"+msg+"\n");
                 }
                 
@@ -104,7 +103,7 @@ public class ChatPage extends javax.swing.JFrame {
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
-        jPanel1.setBackground(new java.awt.Color(7, 94, 84));
+        jPanel1.setBackground(new java.awt.Color(0, 0, 102));
 
         back.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -140,7 +139,7 @@ public class ChatPage extends javax.swing.JFrame {
         text.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.gray, java.awt.Color.white, java.awt.Color.gray, java.awt.Color.gray));
         text.setPreferredSize(new java.awt.Dimension(7, 25));
 
-        send.setBackground(new java.awt.Color(0, 51, 51));
+        send.setBackground(new java.awt.Color(0, 0, 102));
         send.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         send.setForeground(new java.awt.Color(255, 255, 255));
         send.setText("SEND");
@@ -204,12 +203,19 @@ public class ChatPage extends javax.swing.JFrame {
 
     private void sendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendActionPerformed
         // TODO add your handling code here:
+        try
+        {
         String out=text.getText();
-        this.pw.println(out);
-        this.pw.flush();
+        this.os.writeUTF(out);
+        this.os.flush();
         puttext.append("Me :"+out+"\n");
         text.setText("");
         text.requestFocus();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_sendActionPerformed
 
     /**
