@@ -40,11 +40,11 @@ class NewJFrame extends javax.swing.JFrame {
         Border j=BorderFactory.createMatteBorder(2, 3, 3, 3, Color.WHITE);
         jPasswordField1.setBorder(j);
         jTextField_username.setBorder(j);
-        ImageIcon i=new ImageIcon(ClassLoader.getSystemResource("C:/Users/hp/Downloads/anokgi1.jpg"));
-     Image img=i.getImage();
-     Image imgscale=img.getScaledInstance(picture.getWidth(), picture.getHeight(), Image.SCALE_SMOOTH);
-      ImageIcon  scale=new ImageIcon(imgscale);
-        picture.setIcon(scale);
+//        ImageIcon i=new ImageIcon(ClassLoader.getSystemResource("main/java/Image/anokhi1.jpg"));
+//     Image img=i.getImage();
+//     Image imgscale=img.getScaledInstance(picture.getWidth(), picture.getHeight(), Image.SCALE_SMOOTH);
+//      ImageIcon  scale=new ImageIcon(imgscale);
+//        picture.setIcon(scale);
         //System.out.println("in jframe");
         this.s=s;
         //this.oi = new ObjectInputStream(s.getInputStream());System.out.println("in jframe");
@@ -186,6 +186,7 @@ class NewJFrame extends javax.swing.JFrame {
             }
         });
 
+        ForgotPass.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         ForgotPass.setText("Forgot Password");
         ForgotPass.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -245,7 +246,7 @@ class NewJFrame extends javax.swing.JFrame {
             .addComponent(picture, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        //jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("C:/Users/rohit/OneDrive/Documents/NetBeansProjects/mavenproject1/src/main/java/com/lasercodes/mavenproject1/anokhi8.jpeg")));
+        //picture.setIcon(new javax.swing.ImageIcon(getClass().getResource("C:/Users/hp/OneDrive/Documents/NetBeansProjects/mavenproject1/src/main/java/Image/anokhi1.jpg")));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);

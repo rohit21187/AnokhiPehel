@@ -31,6 +31,7 @@ class ForgotPassword extends javax.swing.JFrame {
     public ForgotPassword(Socket s,ObjectInputStream oi, ObjectOutputStream os) throws IOException {
         initComponents();
         this.s=s;
+        setLocation(300,50);
         setVisible(true);
         this.oi = oi;System.out.println("val");
         this.os = os;System.out.println("out of constructor");
@@ -63,7 +64,7 @@ class ForgotPassword extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Enter Your College ID Here");
 
-        ok.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        ok.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         ok.setText("OK");
         ok.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -71,6 +72,8 @@ class ForgotPassword extends javax.swing.JFrame {
             }
         });
 
+        Back.setBackground(new java.awt.Color(255, 255, 255));
+        Back.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         Back.setText("Back");
         Back.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -90,9 +93,9 @@ class ForgotPassword extends javax.swing.JFrame {
                             .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(202, 202, 202)
+                        .addGap(111, 111, 111)
                         .addComponent(ok, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(43, 43, 43)
+                        .addGap(74, 74, 74)
                         .addComponent(Back)))
                 .addContainerGap(173, Short.MAX_VALUE))
         );
@@ -107,7 +110,7 @@ class ForgotPassword extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ok)
                     .addComponent(Back))
-                .addContainerGap(122, Short.MAX_VALUE))
+                .addContainerGap(123, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -132,7 +135,10 @@ class ForgotPassword extends javax.swing.JFrame {
         }
         else
         {
-            
+           Verification v= new Verification(this.s,this.oi,this.os);
+           v.setVisible(true);
+           this.dispose();
+           
         }
     }//GEN-LAST:event_okActionPerformed
 

@@ -8,6 +8,7 @@ package project;
 
 //package project;
 import java.awt.Color;
+import java.awt.Image;
 import java.io.BufferedReader;
 //>>>>>>> 8a93db0ff776969f65e9f6051b0035524309796e:src/main/java/project/Register_Form.java
 import java.sql.*;
@@ -23,6 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -51,9 +53,12 @@ public class Register_Form extends javax.swing.JFrame {
         buttonGroup3=new ButtonGroup();
         buttonGroup3.add(jRadioButton1);
         buttonGroup3.add(jRadioButton2);
+        
+        
         this.s=s;
         this.os=os;
         this.oi=oi;
+        setLocation(300,0);
         setVisible(true);
     }
     public Register_Form() {
@@ -62,6 +67,11 @@ public class Register_Form extends javax.swing.JFrame {
         buttonGroup3=new ButtonGroup();
         buttonGroup3.add(jRadioButton1);
         buttonGroup3.add(jRadioButton2);
+        ImageIcon i=new ImageIcon(ClassLoader.getSystemResource("Image/arrowfinal.png"));
+     Image img=i.getImage();
+     Image imgscale=img.getScaledInstance(back.getWidth(), back.getHeight(), Image.SCALE_SMOOTH);
+      ImageIcon  scale=new ImageIcon(imgscale);
+      back.setIcon(scale);
         setVisible(true);
          
 //        jTabbedPane1=new JTabbedPane();
@@ -112,6 +122,8 @@ public class Register_Form extends javax.swing.JFrame {
         imageSelector = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
+        back = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -217,13 +229,30 @@ public class Register_Form extends javax.swing.JFrame {
         jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.setText("Image Path");
 
+        jButton1.setBackground(new java.awt.Color(255, 255, 255));
+        jButton1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(0, 102, 102));
+        jButton1.setText("BACK");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(54, 54, 54)
+                .addContainerGap()
+                .addComponent(back, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(submit, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(114, 114, 114)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel9)
@@ -263,16 +292,14 @@ public class Register_Form extends javax.swing.JFrame {
                                 .addComponent(pass, javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING)))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(submit, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(193, 193, 193))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(back, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(29, 29, 29)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -321,7 +348,9 @@ public class Register_Form extends javax.swing.JFrame {
                     .addComponent(imageSelector)
                     .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(35, 35, 35)
-                .addComponent(submit, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(submit, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE))
                 .addContainerGap(76, Short.MAX_VALUE))
         );
 
@@ -431,6 +460,22 @@ public class Register_Form extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_imageSelectorActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        NewJFrame njf;
+        try
+        {
+           njf=new NewJFrame(this.s,this.oi,this.os);
+           njf.setVisible(true);
+           this.dispose();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
     //check fields are empty or not
     
     public boolean verifyFields(Registration std1)
@@ -466,10 +511,12 @@ public class Register_Form extends javax.swing.JFrame {
     private javax.swing.JTextField Mno;
     private javax.swing.JTextField Rno;
     private javax.swing.JTextField Username;
+    private javax.swing.JLabel back;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.ButtonGroup buttonGroup3;
     private javax.swing.JButton imageSelector;
+    private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
