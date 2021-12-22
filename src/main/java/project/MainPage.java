@@ -5,6 +5,8 @@
  */
 package project;
 
+import java.net.*;
+import java.io.*;
 import java.awt.Color;
 import javax.swing.BorderFactory;
 import javax.swing.border.Border;
@@ -18,9 +20,21 @@ public class MainPage extends javax.swing.JFrame {
     /**
      * Creates new form MainPage
      */
-    public MainPage() {
+    private Socket s;
+    private BufferedReader br;
+    private PrintWriter pw;
+    public MainPage(Socket s,BufferedReader br,PrintWriter pw) {
         initComponents();
+        setLocationRelativeTo(null);
+        setVisible(true);
+        this.s=s;
+        this.br=br;
+        this.pw=pw;
         
+    }
+    public MainPage()
+    {
+        initComponents();
     }
 
     /**
@@ -362,6 +376,15 @@ public class MainPage extends javax.swing.JFrame {
 
     private void chatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_chatMouseClicked
         // TODO add your handling code here:
+        
+        ChatPage cp=new ChatPage(this.s,this.br,this.pw);
+        pw.write(4);
+        pw.flush();
+        this.setVisible(false);
+        
+        
+        
+        
     }//GEN-LAST:event_chatMouseClicked
 
     private void NotificationMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_NotificationMouseClicked
