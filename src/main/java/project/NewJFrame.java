@@ -13,6 +13,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.ToolTipManager;
@@ -47,8 +49,6 @@ class NewJFrame extends javax.swing.JFrame {
 //        picture.setIcon(scale);
         //System.out.println("in jframe");
         this.s=s;
-        //this.oi = new ObjectInputStream(s.getInputStream());System.out.println("in jframe");
-        //this.os = new ObjectOutputStream(s.getOutputStream());System.out.println("in jframe");
         setVisible(true);
         System.out.println("out jframe");
         this.oi = oi;System.out.println("val");
@@ -428,7 +428,10 @@ class NewJFrame extends javax.swing.JFrame {
                 if(res.equals("correct")){
                   //show a new form 
                     JOptionPane.showMessageDialog(null,"correct details","Login sucess",2);
-                    //break;
+                    this.toBack();
+                    this.dispose();
+                    new MainPage(this.s,this.oi,this.os).toFront();
+                    this.toFront();
                 }
                 else{
                     //show error

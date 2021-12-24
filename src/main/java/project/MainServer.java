@@ -53,9 +53,10 @@ class ClientHandler  implements Runnable{
     private Thread t;
     private Socket s;
     private int VerificationTimes=0,loginVerified=0;
+    private boolean verified=false;
     private Registration std;
     private String otp;
-    private String clientusername;
+    private String ClientUsername;
     private ObjectOutputStream os;
     private ObjectInputStream oi;
     
@@ -66,7 +67,7 @@ class ClientHandler  implements Runnable{
         clienthandler.add(this);
         this.os=new ObjectOutputStream(s.getOutputStream());
         this.oi=new ObjectInputStream(s.getInputStream());
-        this.clientusername=oi.readUTF();
+        //this.ClientUsername=oi.readUTF();
        
         t= new Thread(this);
         t.start();
@@ -156,13 +157,9 @@ class ClientHandler  implements Runnable{
         }
         return 0;
     }
-    
     @Override
     public void run() {
         String messagefromclient;
-        //PrintWriter write=null;
-        //BufferedReader reader=null;
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         try(Connection cn=My_Connection.getconnection();){
             // add a timer to thread which kills it if client takes more than 20 seconds
             //write = new PrintWriter(s.getOutputStream(),true);
@@ -184,8 +181,9 @@ class ClientHandler  implements Runnable{
                         int check= LoginVerify(lg,cn);
                         if(check==1){
                             System.out.println("correct");
-                            os.writeUTF("correct");
-                            os.flush();
+                            os.writeUTF("correct");os.flush();
+                            this.verified=true;
+                            this.ClientUsername=lg.getUser();//set ClientUsername here using get methord
                         }
                         else{
                             System.out.println("wrong");
@@ -226,28 +224,23 @@ class ClientHandler  implements Runnable{
                         os.flush();
                     }
                 }
-                else if(val==4)
-                {
-                    // chatting started
-                    try
-                    {
-                        messagefromclient=oi.readUTF();
-                        broadcastmessage(messagefromclient,this.oi,this.os);
-                        
-                    }
-                    catch(IOException e)
-                            {
-                                e.printStackTrace();
-                                break;
-                            }
-                
-                    
-                }
                 else{
                     os.writeInt(-1); //no more chances left
                     os.flush();
                 }
                 
+            }
+            else if(val==4){
+                // chatting started
+                try{
+                    messagefromclient=oi.readUTF();
+                    broadcastmessage(messagefromclient,this.oi,this.os);
+
+                }
+                catch(IOException e){
+                    e.printStackTrace();
+                    break;
+                }
             }
             //s.close();
         }while(true);
@@ -265,13 +258,12 @@ class ClientHandler  implements Runnable{
             //os.flush();
         }
     }
-    public void broadcastmessage(String messagetosend,ObjectInputStream oi,ObjectOutputStream os)
-    {
+    private void broadcastmessage(String messagetosend,ObjectInputStream oi,ObjectOutputStream os){
         for(ClientHandler clienthandler:clienthandler)
         {
             try
             {
-                if(!clienthandler.clientusername.equals(clientusername))
+                if(!clienthandler.ClientUsername.equals(ClientUsername))
                 {
                     clienthandler.os.writeUTF(messagetosend);
                     clienthandler.os.flush();
