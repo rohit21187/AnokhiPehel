@@ -48,17 +48,33 @@ public class MainServer {
     
     
 class ClientHandler  implements Runnable{
-    
+    public static ArrayList<ClientHandler> clienthandler=new ArrayList<>();
     //public static Queue<String> q = new LinkedList<String>();
     private Thread t;
     private Socket s;
     private int VerificationTimes=0,loginVerified=0;
     private Registration std;
     private String otp;
+    private String clientusername;
+    private ObjectOutputStream os;
+    private ObjectInputStream oi;
+    
     public ClientHandler(Socket s){
+        try
+        {
         this.s=s;
+        clienthandler.add(this);
+        this.os=new ObjectOutputStream(s.getOutputStream());
+        this.oi=new ObjectInputStream(s.getInputStream());
+        this.clientusername=oi.readUTF();
+       
         t= new Thread(this);
         t.start();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
     }
     private  int LoginVerify(Login lg,Connection cn) throws SQLException{
         PreparedStatement st=null;
@@ -140,9 +156,10 @@ class ClientHandler  implements Runnable{
         }
         return 0;
     }
+    
     @Override
     public void run() {
-        
+        String messagefromclient;
         //PrintWriter write=null;
         //BufferedReader reader=null;
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -150,11 +167,10 @@ class ClientHandler  implements Runnable{
             // add a timer to thread which kills it if client takes more than 20 seconds
             //write = new PrintWriter(s.getOutputStream(),true);
             //reader =new BufferedReader(new InputStreamReader(s.getInputStream()));
+    
+            //System.out.println("val");
             System.out.println("val");
-            
-            ObjectOutputStream os = new ObjectOutputStream(s.getOutputStream());System.out.println("val");
             os.flush();
-            ObjectInputStream oi = new ObjectInputStream(s.getInputStream());
             PreparedStatement st=null;
             ResultSet rs=null;
             
@@ -210,6 +226,23 @@ class ClientHandler  implements Runnable{
                         os.flush();
                     }
                 }
+                else if(val==4)
+                {
+                    // chatting started
+                    try
+                    {
+                        messagefromclient=oi.readUTF();
+                        broadcastmessage(messagefromclient,this.oi,this.os);
+                        
+                    }
+                    catch(IOException e)
+                            {
+                                e.printStackTrace();
+                                break;
+                            }
+                
+                    
+                }
                 else{
                     os.writeInt(-1); //no more chances left
                     os.flush();
@@ -232,7 +265,23 @@ class ClientHandler  implements Runnable{
             //os.flush();
         }
     }
+    public void broadcastmessage(String messagetosend,ObjectInputStream oi,ObjectOutputStream os)
+    {
+        for(ClientHandler clienthandler:clienthandler)
+        {
+            try
+            {
+                if(!clienthandler.clientusername.equals(clientusername))
+                {
+                    clienthandler.os.writeUTF(messagetosend);
+                    clienthandler.os.flush();
+                }
+            }catch(Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
 
-    
+    }
     
 }

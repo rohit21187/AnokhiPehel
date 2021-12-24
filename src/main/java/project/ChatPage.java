@@ -18,6 +18,7 @@ public class ChatPage extends javax.swing.JFrame {
     private Socket socket=null;
     private ObjectInputStream oi;
     private ObjectOutputStream os;
+    private String username;
     /**
      * Creates new form ChatPage
      */
@@ -25,7 +26,7 @@ public class ChatPage extends javax.swing.JFrame {
     {
        initComponents(); 
     }
-    public ChatPage(Socket s,ObjectInputStream oi, ObjectOutputStream os) {
+    public ChatPage(Socket s,ObjectInputStream oi, ObjectOutputStream os,String username) {
         setUndecorated(true);
         initComponents();
         setLocationRelativeTo(null);
@@ -51,10 +52,11 @@ public class ChatPage extends javax.swing.JFrame {
       this.socket=s;
       this.oi=oi;
       this.os=os;
-      
+      this.username=username;
+      os.writeUTF(username);
       puttext.setLineWrap(true);
       puttext.setWrapStyleWord(true);
-      startReading();
+      listenformessage();
        }
        catch(Exception e)
        {
@@ -62,21 +64,47 @@ public class ChatPage extends javax.swing.JFrame {
        }
         
     }
-        private void startReading()
+//        private void startReading()
+//        {
+//            try{
+//                while(!socket.isClosed())
+//                {
+//                    String msg=this.oi.readUTF();
+//                    puttext.append("Server :"+msg+"\n");
+//                }
+//                
+//            }
+//            catch(Exception e)
+//            {
+//                e.printStackTrace();
+//            }
+//        }
+        public void listenformessage()
+         {
+            new Thread(new Runnable()
         {
-            try{
-                while(!socket.isClosed())
-                {
-                    String msg=this.oi.readUTF();
-                    puttext.append("Server :"+msg+"\n");
-                }
-                
-            }
-            catch(Exception e)
+            public void run()
             {
-                e.printStackTrace();
+                String msg;
+                while(socket.isConnected())
+                {
+                    try
+                    {
+                        msg=oi.readUTF();
+                        puttext.append(msg+"\n");
+                        
+                    }catch(Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+                    
+                }
             }
         }
+                
+        ).start();
+    }
+    
             /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -101,9 +129,9 @@ public class ChatPage extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel3.setBackground(new java.awt.Color(0, 102, 102));
 
-        jPanel1.setBackground(new java.awt.Color(0, 0, 102));
+        jPanel1.setBackground(new java.awt.Color(0, 102, 102));
 
         back.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -139,7 +167,7 @@ public class ChatPage extends javax.swing.JFrame {
         text.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.gray, java.awt.Color.white, java.awt.Color.gray, java.awt.Color.gray));
         text.setPreferredSize(new java.awt.Dimension(7, 25));
 
-        send.setBackground(new java.awt.Color(0, 0, 102));
+        send.setBackground(new java.awt.Color(0, 51, 51));
         send.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         send.setForeground(new java.awt.Color(255, 255, 255));
         send.setText("SEND");
@@ -160,15 +188,12 @@ public class ChatPage extends javax.swing.JFrame {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(text, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(send, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18))
+                .addComponent(text, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(send, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(jScrollPane1)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -186,7 +211,7 @@ public class ChatPage extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 422, Short.MAX_VALUE)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -205,8 +230,9 @@ public class ChatPage extends javax.swing.JFrame {
         // TODO add your handling code here:
         try
         {
+            this.os.writeInt(4);
         String out=text.getText();
-        this.os.writeUTF(out);
+        this.os.writeUTF(username+": "+out);
         this.os.flush();
         puttext.append("Me :"+out+"\n");
         text.setText("");
