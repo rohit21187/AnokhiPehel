@@ -377,7 +377,8 @@ public class MainPage extends javax.swing.JFrame {
     private void chatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_chatMouseClicked
         // TODO add your handling code here:
         try{
-        ChatPage cp=new ChatPage(this.s,this.oi,this.os);
+            String str="";
+        ChatPage cp=new ChatPage(this.s,this.oi,this.os,str);
         os.write(4);
         os.flush();
         this.setVisible(false);
