@@ -32,11 +32,21 @@ public class MainPage extends javax.swing.JFrame {
         this.os=os;
         
     }
-    public MainPage()
-    {
+    public MainPage(){
         initComponents();
     }
-
+    private void OpenClassPage(){
+        try{
+            this.toBack();
+            this.dispose();
+            new Class(this.s,this.oi,this.os).toFront();
+            this.toFront();
+            
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -372,19 +382,21 @@ public class MainPage extends javax.swing.JFrame {
 
     private void classesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_classesMouseClicked
         // TODO add your handling code here:
+        this.OpenClassPage();
+        
     }//GEN-LAST:event_classesMouseClicked
 
     private void chatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_chatMouseClicked
         // TODO add your handling code here:
         try{
             String str="";
-        ChatPage cp=new ChatPage(this.s,this.oi,this.os,str);
-        os.write(4);
-        os.flush();
-        this.setVisible(false);
+            ChatPage cp=new ChatPage(this.s,this.oi,this.os,str);
+            cp.setVisible(true);
+            os.write(4);
+            os.flush();
+            //this.setVisible(false);
         }
-        catch(Exception e)
-        {
+        catch(Exception e){
             e.printStackTrace();
         }
         
@@ -405,22 +417,27 @@ public class MainPage extends javax.swing.JFrame {
 
     private void Class8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Class8MouseClicked
         // TODO add your handling code here:
+        this.OpenClassPage();
     }//GEN-LAST:event_Class8MouseClicked
 
     private void Class9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Class9MouseClicked
         // TODO add your handling code here:
+        this.OpenClassPage();
     }//GEN-LAST:event_Class9MouseClicked
 
     private void Class10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Class10MouseClicked
         // TODO add your handling code here:
+        this.OpenClassPage();
     }//GEN-LAST:event_Class10MouseClicked
 
     private void Class11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Class11MouseClicked
         // TODO add your handling code here:
+        this.OpenClassPage();
     }//GEN-LAST:event_Class11MouseClicked
 
     private void Class12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Class12MouseClicked
         // TODO add your handling code here:
+        this.OpenClassPage();
     }//GEN-LAST:event_Class12MouseClicked
 
     /**

@@ -5,6 +5,10 @@
  */
 package project;
 
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+
 /**
  *
  * @author hp
@@ -14,12 +18,22 @@ public class Class extends javax.swing.JFrame {
     /**
      * Creates new form Class
      */
+    private Socket s;
+    private ObjectInputStream oi;
+    private ObjectOutputStream os;
+    public Class(Socket s,ObjectInputStream oi, ObjectOutputStream os) {
+        initComponents();
+        setLocation(200,20);
+        setVisible(true);
+        this.s=s;
+        this.oi=oi;
+        this.os=os; 
+        
+    }
     public Class() {
         initComponents();
         setLocation(200,20);
-        
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -34,13 +48,14 @@ public class Class extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem6 = new javax.swing.JMenuItem();
+        Insert = new javax.swing.JMenuItem();
+        Delete = new javax.swing.JMenuItem();
+        ShowAll = new javax.swing.JMenuItem();
+        Modify = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
+        Result = new javax.swing.JMenuItem();
+        Attendence = new javax.swing.JMenuItem();
+        Back = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -80,37 +95,45 @@ public class Class extends javax.swing.JFrame {
 
         jMenu1.setText("Manage");
 
-        jMenuItem1.setText("Insert ");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        Insert.setText("Insert ");
+        Insert.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                InsertActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        jMenu1.add(Insert);
 
-        jMenuItem2.setText("Delete");
-        jMenu1.add(jMenuItem2);
+        Delete.setText("Delete");
+        jMenu1.add(Delete);
 
-        jMenuItem3.setText("Show all");
-        jMenu1.add(jMenuItem3);
+        ShowAll.setText("Show all");
+        jMenu1.add(ShowAll);
 
-        jMenuItem6.setText("Modify");
-        jMenu1.add(jMenuItem6);
+        Modify.setText("Modify");
+        jMenu1.add(Modify);
 
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Other");
 
-        jMenuItem4.setText("Result");
-        jMenu2.add(jMenuItem4);
+        Result.setText("Result");
+        jMenu2.add(Result);
 
-        jMenuItem5.setText("Attendence");
-        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+        Attendence.setText("Attendence");
+        Attendence.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem5ActionPerformed(evt);
+                AttendenceActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem5);
+        jMenu2.add(Attendence);
+
+        Back.setText("Back");
+        Back.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BackActionPerformed(evt);
+            }
+        });
+        jMenu2.add(Back);
 
         jMenuBar1.add(jMenu2);
 
@@ -130,14 +153,23 @@ public class Class extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+    private void AttendenceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AttendenceActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem5ActionPerformed
+    }//GEN-LAST:event_AttendenceActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void InsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InsertActionPerformed
         // TODO add your handling code here:
+        new InsertData(this.s,this.oi,this.os);
         
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_InsertActionPerformed
+
+    private void BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackActionPerformed
+        // TODO add your handling code here:
+        this.toBack();
+        this.dispose();
+        new MainPage(this.s,this.oi,this.os).toFront();
+        this.toFront();
+    }//GEN-LAST:event_BackActionPerformed
 
     /**
      * @param args the command line arguments
@@ -175,15 +207,16 @@ public class Class extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem Attendence;
+    private javax.swing.JMenuItem Back;
+    private javax.swing.JMenuItem Delete;
+    private javax.swing.JMenuItem Insert;
+    private javax.swing.JMenuItem Modify;
+    private javax.swing.JMenuItem Result;
+    private javax.swing.JMenuItem ShowAll;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
