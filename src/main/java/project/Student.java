@@ -5,32 +5,50 @@
  */
 package project;
 
+import java.io.Serializable;
+
 /**
  *
  * @author hp
  */
-public class Student {
-    private String name,mobile,address,school;
-   public void setName(String name)
+public class Student implements Serializable {
+    private String name,mobile,address,school,cls;
+    private int regno;
+    Student(String name, String mobile,String Add,String sch,String cls){
+        this.name=name;
+        this.mobile=mobile;
+        this.address=Add;
+        this.school=sch;
+        this.cls=cls;
+    }
+    Student(String name, String mobile,String Add,String sch,String cls,int regno){
+        this.name=name;
+        this.mobile=mobile;
+        this.address=Add;
+        this.school=sch;
+        this.cls=cls;
+        this.regno=regno;
+    }
+
+    Student() { //To change body of generated methods, choose Tools | Templates.
+    }
+   protected void setName(String name)
    {
        this.name=name;
    }
-   public void setMobile(String mobile)
+   protected void setMobile(String mobile)
    {
        this.mobile=mobile;
    }
-   public void setAddress(String address)
+   protected void setAddress(String address)
    {
        this.address=address;
    }
-   
-    public String getName()
-   {
-       return this.name;
+   protected void setRegNo(int no){
+       this.regno=no;
    }
-   public String setMobile()
-   {
-      return this.mobile;
+   protected void setClass(String cls){
+       this.cls=cls;
    }
    public String setAddress()
    {
@@ -40,6 +58,22 @@ public class Student {
    {
       return this.school;
    }
-   
-    
+   public String getName(){
+       return this.name;
+   }
+   public String getMobile(){
+       return this.mobile;
+   }
+   public String getAdd(){
+       return this.address;
+   }
+   public String getSchool(){
+       return this.school;
+   }
+   public String getCls(){
+       return this.cls;
+   }
+   protected int getRegNo(){
+       return this.regno;
+   } 
 }

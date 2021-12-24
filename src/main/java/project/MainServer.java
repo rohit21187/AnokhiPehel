@@ -157,6 +157,38 @@ class ClientHandler  implements Runnable{
         }
         return 0;
     }
+    private int RegisterStudentInDB(Student std1, Connection cn) throws SQLException {
+        String query="INSERT INTO StudentDetail (`RegNo`,`Name`, `Mobile`, `Address`, `School`,`Class`) VALUES (?,?,?,?,?,?)";
+        PreparedStatement ps=null;
+        ResultSet rs=null;    
+        ps=cn.prepareStatement(query);
+        ps.setString(1,CreateRegNo(cn,std1.getCls()));
+        ps.setString(2,std1.getName());
+        ps.setString(3,std1.getMobile());
+        ps.setString(4,std1.getAdd());
+        ps.setString(5,std1.getSchool());
+        ps.setString(6,std1.getCls());
+        if(ps.executeUpdate()!=0){
+           return 1;
+        }
+        else{
+            return 0;
+
+        }
+    }
+    private String CreateRegNo(Connection cn,String cls)throws SQLException {
+        String query="SELECT COUNT(*) FROM StudentDetail WHERE Class = "+cls;
+        PreparedStatement ps=null;
+        ResultSet rs=null;    
+        ps=cn.prepareStatement(query);
+        rs = ps.executeQuery(query);
+      //Retrieving the result
+        rs.next();
+        int count = rs.getInt(1);
+        count++;
+        String ans=cls+count;
+        return ans;
+    }
     @Override
     public void run() {
         String messagefromclient;
@@ -175,7 +207,7 @@ class ClientHandler  implements Runnable{
                 System.out.println("val");
                 int val= (int)oi.readInt();
                 System.out.println(val);
-                if(val==1){
+                if(val==1){ //check login
                     try{
                         Login lg =(Login)oi.readObject();
                         int check= LoginVerify(lg,cn);
@@ -194,9 +226,8 @@ class ClientHandler  implements Runnable{
                     catch (Exception e){
                         e.printStackTrace();
                     }
-                //invoke ClientClient 
             }
-            else if(val==2){
+            else if(val==2){ //register user in  db
                 this.std = (Registration)oi.readObject(); //reading user details//System.out.println("read reg obj");
                 int cu= CheckUserName(std.getusername());
                 if(cu==1){//System.out.println("checked user");
@@ -211,7 +242,7 @@ class ClientHandler  implements Runnable{
                     os.flush();
                 }
             }
-            else if(val==3){
+            else if(val==3){ //verify emial otp
                 this.VerificationTimes--;
                 if(this.VerificationTimes>0){
                     String s=oi.readUTF();
@@ -241,6 +272,11 @@ class ClientHandler  implements Runnable{
                     e.printStackTrace();
                     break;
                 }
+            }
+            else if(val==5){// insert anew student in db
+                Student student = (Student)oi.readObject();
+                os.writeInt(RegisterStudentInDB(student,cn));
+                os.flush();
             }
             //s.close();
         }while(true);
@@ -274,6 +310,6 @@ class ClientHandler  implements Runnable{
             }
         }
 
-    }
-    
+    }    
+   
 }
