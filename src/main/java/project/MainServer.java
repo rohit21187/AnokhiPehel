@@ -52,7 +52,7 @@ class ClientHandler  implements Runnable{
     //public static Queue<String> q = new LinkedList<String>();
     private Thread t;
     private Socket s;
-    private int VerificationTimes=0,loginVerified=0;
+    private int VerificationTimes=0,loginVerified=0,cls;
     private boolean verified=false;
     private Registration std;
     private String otp;
@@ -189,6 +189,19 @@ class ClientHandler  implements Runnable{
         String ans=cls+count;
         return ans;
     }
+    private Vector<Student> StudentsInClass(Connection cn) throws SQLException {
+        Vector<Student> Stud = new Vector<Student>();
+        String query="SELECT * FROM StudentDetail WHERE Class = "+this.cls;
+        PreparedStatement ps=null;
+        ResultSet rs=null;    
+        ps=cn.prepareStatement(query);
+        rs = ps.executeQuery(query);
+        while(rs.next()){
+            Student s= new Student(rs.getString("RegNo"),rs.getString("Name"),rs.getString("Mobile"),rs.getString("Address"),rs.getString("School"),rs.getString("Class"));
+            Stud.add(s);
+        }
+        return Stud;
+    }
     @Override
     public void run() {
         String messagefromclient;
@@ -277,6 +290,10 @@ class ClientHandler  implements Runnable{
                 Student student = (Student)oi.readObject();
                 os.writeInt(RegisterStudentInDB(student,cn));
                 os.flush();
+            }
+            else if(val==6){//to fetch details of a class
+                this.cls=(int)oi.readInt();
+                os.writeObject(StudentsInClass(cn));
             }
             //s.close();
         }while(true);

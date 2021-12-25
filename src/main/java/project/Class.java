@@ -5,9 +5,14 @@
  */
 package project;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -21,18 +26,35 @@ public class Class extends javax.swing.JFrame {
     private Socket s;
     private ObjectInputStream oi;
     private ObjectOutputStream os;
-    public Class(Socket s,ObjectInputStream oi, ObjectOutputStream os) {
+    private Vector<Student> Stud;
+    public Class(Socket s,ObjectInputStream oi, ObjectOutputStream os) throws IOException {
         initComponents();
         setLocation(200,20);
         setVisible(true);
         this.s=s;
         this.oi=oi;
         this.os=os; 
-        
+        this.FillTable();
     }
     public Class() {
         initComponents();
         setLocation(200,20);
+    }
+    private void FillTable() throws IOException {
+        try {
+            this.Stud=(Vector<Student>)oi.readObject();
+            int size=Stud.capacity();
+            int i=0;
+            DefaultTableModel dtm= (DefaultTableModel)jTable1.getModel();
+            while(size>0){
+                dtm.addRow(new Object[]{Stud.get(i).getRegNo(),Stud.get(i).getName(),
+                Stud.get(i).getSchool(),Stud.get(i).getMobile(),Stud.get(i).getAdd()});//Adding row in Table
+                i++;size--;
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Class.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -221,4 +243,5 @@ public class Class extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
+
 }

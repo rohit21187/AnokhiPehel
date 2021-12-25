@@ -8,6 +8,8 @@ package project;
 import java.net.*;
 import java.io.*;
 import java.awt.Color;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.border.Border;
 
@@ -416,28 +418,62 @@ public class MainPage extends javax.swing.JFrame {
     }//GEN-LAST:event_TimeTableMouseClicked
 
     private void Class8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Class8MouseClicked
-        // TODO add your handling code here:
-        this.OpenClassPage();
+        try {
+            // TODO add your handling code here:
+            os.writeInt(6);os.flush();
+            os.writeInt(8);os.flush();
+            this.OpenClassPage();
+        } catch (IOException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_Class8MouseClicked
 
     private void Class9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Class9MouseClicked
         // TODO add your handling code here:
-        this.OpenClassPage();
+        try {
+            // TODO add your handling code here:
+            os.writeInt(6);os.flush();
+            os.writeInt(9);os.flush();
+            this.OpenClassPage();
+        } catch (IOException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_Class9MouseClicked
 
     private void Class10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Class10MouseClicked
         // TODO add your handling code here:
-        this.OpenClassPage();
+        try {
+            // TODO add your handling code here:
+            os.writeInt(6);os.flush();
+            os.writeInt(10);os.flush();
+            this.OpenClassPage();
+        } catch (IOException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_Class10MouseClicked
 
     private void Class11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Class11MouseClicked
         // TODO add your handling code here:
-        this.OpenClassPage();
+        try {
+            // TODO add your handling code here:
+            os.writeInt(6);os.flush();
+            os.writeInt(11);os.flush();
+            this.OpenClassPage();
+        } catch (IOException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_Class11MouseClicked
 
     private void Class12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Class12MouseClicked
         // TODO add your handling code here:
-        this.OpenClassPage();
+        try {
+            // TODO add your handling code here:
+            os.writeInt(6);os.flush();
+            os.writeInt(12);os.flush();
+            this.OpenClassPage();
+        } catch (IOException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_Class12MouseClicked
 
     /**

@@ -13,7 +13,7 @@ import java.io.Serializable;
  */
 public class Student implements Serializable {
     private String name,mobile,address,school,cls;
-    private int regno;
+    private String regno;
     Student(String name, String mobile,String Add,String sch,String cls){
         this.name=name;
         this.mobile=mobile;
@@ -21,7 +21,7 @@ public class Student implements Serializable {
         this.school=sch;
         this.cls=cls;
     }
-    Student(String name, String mobile,String Add,String sch,String cls,int regno){
+    Student(String regno,String name, String mobile,String Add,String sch,String cls){
         this.name=name;
         this.mobile=mobile;
         this.address=Add;
@@ -44,7 +44,7 @@ public class Student implements Serializable {
    {
        this.address=address;
    }
-   protected void setRegNo(int no){
+   protected void setRegNo(String no){
        this.regno=no;
    }
    protected void setClass(String cls){
@@ -73,7 +73,7 @@ public class Student implements Serializable {
    public String getCls(){
        return this.cls;
    }
-   protected int getRegNo(){
+   protected String getRegNo(){
        return this.regno;
    } 
 }
