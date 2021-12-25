@@ -49,6 +49,7 @@ public class MainServer {
     
 class ClientHandler  implements Runnable{
     public static ArrayList<ClientHandler> clienthandler=new ArrayList<>();
+    private Vector<String> Reg_num=new Vector<>();
     //public static Queue<String> q = new LinkedList<String>();
     private Thread t;
     private Socket s;
@@ -191,6 +192,7 @@ class ClientHandler  implements Runnable{
     }
     private Vector<Student> StudentsInClass(Connection cn) throws SQLException {
         Vector<Student> Stud = new Vector<Student>();
+      
         String query="SELECT * FROM StudentDetail WHERE Class = "+this.cls;
         PreparedStatement ps=null;
         ResultSet rs=null;    
@@ -205,6 +207,7 @@ class ClientHandler  implements Runnable{
     @Override
     public void run() {
         String messagefromclient;
+        Connection cn1=null;
         try(Connection cn=My_Connection.getconnection();){
             // add a timer to thread which kills it if client takes more than 20 seconds
             //write = new PrintWriter(s.getOutputStream(),true);
@@ -213,8 +216,10 @@ class ClientHandler  implements Runnable{
             //System.out.println("val");
             System.out.println("val");
             os.flush();
-            PreparedStatement st=null;
-            ResultSet rs=null;
+            PreparedStatement st=null,st1=null;
+            ResultSet rs=null,rs1=null;
+            cn1=My_Connection2.getconnection();
+            
             
             do{
                 System.out.println("val");
@@ -277,7 +282,35 @@ class ClientHandler  implements Runnable{
             else if(val==4){
                 // chatting started
                 try{
+                    
                     messagefromclient=oi.readUTF();
+                       
+                    String query="select Registration_Number from users where UserName="+this.ClientUsername;
+                    st1=cn1.prepareStatement(query);
+                    rs1 = st1.executeQuery(query);
+                    rs1.next();
+                    String reg_num=rs1.getString(1);
+                    
+                    for(ClientHandler clienthandler:clienthandler)
+                    {
+                     query="select Registration_Number from users where UserName="+clienthandler.ClientUsername;
+                        st1=cn1.prepareStatement(query);
+                        rs1 = st1.executeQuery(query);
+                        rs1.next();
+                        String reg_num1=rs1.getString(1);
+                        
+                        String Table_Name=getTableName(reg_num,reg_num1);
+                        query="insert into "+Table_Name+" values(?,?,?)";
+                        st1=cn1.prepareStatement(query);
+                        st1.setString(1, this.ClientUsername);
+                        st1.setString(2,clienthandler.ClientUsername);
+                        st1.setString(3,messagefromclient);
+                        
+                        st1.executeUpdate();
+                         
+                        
+                    }
+                  
                     broadcastmessage(messagefromclient,this.oi,this.os);
 
                 }
@@ -310,6 +343,16 @@ class ClientHandler  implements Runnable{
         finally{
             //os.flush();
         }
+    }
+    private String getTableName(String r1,String r2)
+    {
+        if(r1.compareTo(r2)<0)
+        {
+            return r1+"_"+r2;
+        }
+        return r2+"_"+r1;
+        
+       
     }
     private void broadcastmessage(String messagetosend,ObjectInputStream oi,ObjectOutputStream os){
         for(ClientHandler clienthandler:clienthandler)
