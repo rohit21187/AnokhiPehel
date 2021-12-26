@@ -13,7 +13,19 @@ import java.io.Serializable;
  */
 public class Registration implements Serializable  {
     private String first_name,last_name,password,gender,username, registration_number,mobile;
-    private int year;
+    private String year;
+    Registration(){
+        
+    }
+    Registration(String first_name,String last_name,String r_num,String mobile,String year, String gender){
+        this.first_name=first_name;
+        this.last_name=last_name;
+        this.registration_number=r_num;
+        this.mobile=mobile;
+        this.year=year;
+        this.gender=gender;
+        this.password="Dont be oversmart";
+    }
     public void setfirstname(String s)
     {
         this.first_name=s;
@@ -42,7 +54,7 @@ public class Registration implements Serializable  {
     {
         this.registration_number=rn;
     }
-    public void setyear(int year)
+    public void setyear(String year)
     {
         this.year=year;
     }
@@ -70,7 +82,7 @@ public class Registration implements Serializable  {
     {
         return registration_number;
     }
-    public int getyear()
+    public String getyear()
     {
         return year;
     }

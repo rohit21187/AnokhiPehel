@@ -116,7 +116,7 @@ class ClientHandler  implements Runnable{
         return username_exist;
     }
     private int RegisterUserInDB(Registration std1,Connection cn) throws SQLException{
-        String query="INSERT INTO users (`First_Name`, `Last_Name`, `Registration_Number`, `Mobile`, `Gender`, `Image`, `UserName`, `Password`) VALUES (?,?,?,?,?,?,?,?)";
+        String query="INSERT INTO users (`First_Name`, `Last_Name`, `Registration_Number`, `Mobile`, `Gender`, `Image`, `UserName`, `Password`,`year`) VALUES (?,?,?,?,?,?,?,?,?)";
         PreparedStatement ps=null;
         ResultSet rs=null;    
         ps=cn.prepareStatement(query);
@@ -127,6 +127,7 @@ class ClientHandler  implements Runnable{
         ps.setString(5,std1.getgender());
         ps.setString(7,std1.getusername());
         ps.setString(8,std1.getpassword());
+        ps.setString(9,std1.getyear());
         ps.setNull(6,java.sql.Types.NULL);
         /*if(jLabel12.getText()!="Image Path")
         {
@@ -168,6 +169,7 @@ class ClientHandler  implements Runnable{
         ps.setString(4,std1.getAdd());
         ps.setString(5,std1.getSchool());
         ps.setString(6,std1.getCls());
+        System.out.println("Statemend prepared");
         if(ps.executeUpdate()!=0){
            return 1;
         }
@@ -184,7 +186,7 @@ class ClientHandler  implements Runnable{
         rs = ps.executeQuery(query);
       //Retrieving the result
         rs.next();
-        int count = rs.getInt(1);
+        int count = rs.getInt(1); 
         count++;
         String ans=cls+count;
         return ans;
@@ -202,6 +204,25 @@ class ClientHandler  implements Runnable{
         }
         return Stud;
     }
+    private Registration ProfileDetails(Connection cn) throws SQLException {
+        System.out.println("in Profile details");
+        Registration user = null;
+        PreparedStatement ps=null;
+        ResultSet rs=null;  
+        String query="select * from users WHERE UserName=?";
+        ps=cn.prepareStatement(query);
+        ps.setString(1, this.ClientUsername);  
+        rs = ps.executeQuery();
+        while(rs.next()){
+            user= new Registration(rs.getString("first_name"),rs.getString("last_name"),rs.getString("Registration_Number"),rs.getString("Mobile"),rs.getString("year"),rs.getString("Gender"));
+            //String first_name,String last_name,String r_num,String mobile,int year, String gender)
+            return user;
+        }
+        System.out.println("out  Profile details");
+        return user;
+
+    }
+ 
     @Override
     public void run() {
         String messagefromclient;
@@ -288,8 +309,9 @@ class ClientHandler  implements Runnable{
             }
             else if(val==5){// insert a new student in db
                 if(this.verified==true){
-                    os.writeInt(1);
+                    os.writeInt(1);os.flush();
                     Student student = (Student)oi.readObject();
+                    System.out.println("Read object");
                     os.writeInt(RegisterStudentInDB(student,cn));
                     os.flush();
                 }
@@ -304,14 +326,44 @@ class ClientHandler  implements Runnable{
                     os.writeInt(1);
                     os.writeObject(StudentsInClass(cn));
                     os.flush();
+                    System.out.println("out of 6");
                 }
                 else{
                     os.writeInt(0);
                 }
                 
             }
-            else if(val ==7){
-                
+            else if(val ==7){//fetch profile details
+                if(this.verified==true){
+                    os.writeInt(1);
+                    System.out.println("verified");
+                    os.writeObject(ProfileDetails(cn));
+                    os.flush();
+                }
+                else{
+                    os.writeInt(0);
+                }
+            }
+            else if(val ==7){//fetch profile details
+                if(this.verified==true){
+                    os.writeInt(1);
+                    os.writeObject(ProfileDetails(cn));
+                    os.flush();
+                }
+                else{
+                    os.writeInt(0);
+                }
+            }
+            else if(val ==8){//logout
+                if(this.verified==true){
+                    os.writeInt(1);
+                    System.out.println("verified");
+                    os.flush();
+                    break;
+                }
+                else{
+                    os.writeInt(0);
+                }
             }
             //s.close();
         }while(true);
@@ -329,6 +381,11 @@ class ClientHandler  implements Runnable{
             //os.flush();
             this.ClientUsername="";
             this.verified=false;
+            try {
+                this.s.close();
+            } catch (IOException ex) {
+                Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
     private void broadcastmessage(String messagetosend,ObjectInputStream oi,ObjectOutputStream os){
@@ -348,5 +405,5 @@ class ClientHandler  implements Runnable{
         }
 
     }    
-   
+  
 }

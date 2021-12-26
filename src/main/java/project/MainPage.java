@@ -73,7 +73,7 @@ public class MainPage extends javax.swing.JFrame {
         classes = new javax.swing.JLabel();
         profile = new javax.swing.JLabel();
         chat = new javax.swing.JLabel();
-        Notification = new javax.swing.JLabel();
+        Logout = new javax.swing.JLabel();
         TimeTable = new javax.swing.JLabel();
         Class8 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
@@ -233,12 +233,12 @@ public class MainPage extends javax.swing.JFrame {
             }
         });
 
-        Notification.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
-        Notification.setForeground(new java.awt.Color(255, 255, 255));
-        Notification.setText("NOTIFICATION");
-        Notification.addMouseListener(new java.awt.event.MouseAdapter() {
+        Logout.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        Logout.setForeground(new java.awt.Color(255, 255, 255));
+        Logout.setText("Log Out");
+        Logout.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                NotificationMouseClicked(evt);
+                LogoutMouseClicked(evt);
             }
         });
 
@@ -258,12 +258,15 @@ public class MainPage extends javax.swing.JFrame {
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(profile, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(classes)
-                    .addComponent(chat)
-                    .addComponent(Notification)
-                    .addComponent(TimeTable))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(profile, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(classes)
+                            .addComponent(chat)
+                            .addComponent(TimeTable))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(Logout, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -274,11 +277,11 @@ public class MainPage extends javax.swing.JFrame {
                 .addComponent(classes)
                 .addGap(54, 54, 54)
                 .addComponent(chat)
-                .addGap(55, 55, 55)
-                .addComponent(Notification)
-                .addGap(72, 72, 72)
+                .addGap(50, 50, 50)
                 .addComponent(TimeTable)
-                .addContainerGap(143, Short.MAX_VALUE))
+                .addGap(48, 48, 48)
+                .addComponent(Logout)
+                .addContainerGap(172, Short.MAX_VALUE))
         );
 
         Class8.setBackground(new java.awt.Color(0, 0, 102));
@@ -316,7 +319,7 @@ public class MainPage extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 102, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 126, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(Class8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -381,6 +384,23 @@ public class MainPage extends javax.swing.JFrame {
 
     private void profileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_profileMouseClicked
         // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            os.writeInt(7);os.flush();
+            int verify=(int)oi.readInt();
+            if(verify==1){
+                this.toBack();
+                this.dispose();
+                new Profile(this.s,this.oi,this.os).toFront();
+                this.toFront();
+            }
+            else{
+                JOptionPane.showMessageDialog(null,"HackerMan","Login First",2);
+            }
+        } 
+        catch (IOException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_profileMouseClicked
 
     private void classesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_classesMouseClicked
@@ -408,11 +428,26 @@ public class MainPage extends javax.swing.JFrame {
         
     }//GEN-LAST:event_chatMouseClicked
 
-    private void NotificationMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_NotificationMouseClicked
-        // TODO add your handling code here:
-        //Will be added in case of new notifiaction
+    private void LogoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LogoutMouseClicked
+        try {
+            // TODO add your handling code here:
+            //Will be added in case of new notifiaction
+            os.writeInt(8);os.flush();
+            int verify=(int)oi.readInt();
+            if(verify==1){
+               this.dispose();
+                this.s.close();
+            }
+            else{
+                JOptionPane.showMessageDialog(null,"HackerMan","Login First",2);
+            }
+            
+            
+        } catch (IOException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
-    }//GEN-LAST:event_NotificationMouseClicked
+    }//GEN-LAST:event_LogoutMouseClicked
 
     private void TimeTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TimeTableMouseClicked
         // TODO add your handling code here:
@@ -549,7 +584,7 @@ public class MainPage extends javax.swing.JFrame {
     private javax.swing.JPanel Class12;
     private javax.swing.JPanel Class8;
     private javax.swing.JPanel Class9;
-    private javax.swing.JLabel Notification;
+    private javax.swing.JLabel Logout;
     private javax.swing.JLabel TimeTable;
     private javax.swing.JLabel chat;
     private javax.swing.JLabel class11;

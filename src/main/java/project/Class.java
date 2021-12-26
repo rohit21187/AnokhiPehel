@@ -43,7 +43,7 @@ public class Class extends javax.swing.JFrame {
     private void FillTable() throws IOException {
         try {
             this.Stud=(Vector<Student>)oi.readObject();
-            int size=Stud.capacity();
+            int size=Stud.size();
             int i=0;
             DefaultTableModel dtm= (DefaultTableModel)jTable1.getModel();
             while(size>0){
@@ -178,7 +178,7 @@ public class Class extends javax.swing.JFrame {
     private void AttendenceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AttendenceActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_AttendenceActionPerformed
-
+    
     private void InsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InsertActionPerformed
         // TODO add your handling code here:
         new InsertData(this.s,this.oi,this.os);

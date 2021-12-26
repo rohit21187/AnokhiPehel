@@ -213,7 +213,7 @@ public class InsertData extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
             Student std= new Student(NameT.getText(),MobT.getText(),AddT.getText(),SchoolT.getText(),getClassValue());
-            os.writeInt(5);
+            os.writeInt(5);os.flush();
             int ver=(int)oi.readInt();
             if(ver==1){
                 os.writeObject(std);
