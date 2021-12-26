@@ -204,6 +204,64 @@ class ClientHandler  implements Runnable{
         }
         return Stud;
     }
+    private String getRegistrationNumber(String username,Connection cn1)throws SQLException
+    {      
+                String query="select Registration_Number from users where UserName="+username;
+                PreparedStatement ps=null;
+                ResultSet rs=null;
+                    ps=cn1.prepareStatement(query);
+                    rs = ps.executeQuery(query);
+                    rs.next();
+               return rs.getString(1);
+           
+    }
+    private int tableExist(String tableName,Connection cn)throws SQLException 
+    {
+        String query="select * from "+  tableName;
+        PreparedStatement ps=null;
+        ResultSet rs=null;
+        ps=cn.prepareStatement(query);
+        rs=ps.executeQuery();
+        if(rs.next())    
+        {
+           return 1; 
+        }
+        return 0;
+        
+    }
+    private void insertIntoTable(String Table_Name,String from,String to,Connection cn1,String messagefromclient)throws SQLException 
+    {                   String query="insert into "+Table_Name+" values(?,?,?)";
+                        PreparedStatement st1=null;
+                        st1=cn1.prepareStatement(query);
+                        st1.setString(1,to);
+                        st1.setString(2,from);
+                        st1.setString(3,messagefromclient);
+                          int a=st1.executeUpdate();
+                          System.out.println(a+" row affected");
+        
+    }
+    private void createTable(String Table_Name,Connection cn1)throws SQLException 
+    {
+        String query="create table "+Table_Name+"(To VARCHAR(255) not null, "+"From VARCHAR(255) not null, "+"Message VARCHAR(8000) not null)";
+        PreparedStatement st1=null;
+         st1=cn1.prepareStatement(query);
+         st1.executeUpdate();
+        
+    }
+    private Vector<String> fetchUsername(Connection cn)throws SQLException 
+    {   Vector<String> list=new Vector<>();
+        PreparedStatement ps=null;
+        ResultSet rs=null;
+        String query="select First_Name,Last_Name from users";
+        ps=cn.prepareStatement(query);
+        rs=ps.executeQuery();
+        while(rs.next())
+        {
+            list.add(rs.getString(1)+" "+rs.getString(2));
+        }
+        return list;
+        
+    }
     @Override
     public void run() {
         String messagefromclient;
@@ -284,36 +342,34 @@ class ClientHandler  implements Runnable{
                 try{
                     
                     messagefromclient=oi.readUTF();
-                       
-                    String query="select Registration_Number from users where UserName="+this.ClientUsername;
-                    st1=cn1.prepareStatement(query);
-                    rs1 = st1.executeQuery(query);
-                    rs1.next();
-                    String reg_num=rs1.getString(1);
+                   
+                    String reg_num=getRegistrationNumber(this.ClientUsername,cn1);
                     
                     for(ClientHandler clienthandler:clienthandler)
                     {
-                     query="select Registration_Number from users where UserName="+clienthandler.ClientUsername;
-                        st1=cn1.prepareStatement(query);
-                        rs1 = st1.executeQuery(query);
-                        rs1.next();
-                        String reg_num1=rs1.getString(1);
-                        
+                        if(!clienthandler.ClientUsername.equals(this.ClientUsername))
+                        {
+                         String reg_num1=getRegistrationNumber(clienthandler.ClientUsername,cn1);
                         String Table_Name=getTableName(reg_num,reg_num1);
-                        query="insert into "+Table_Name+" values(?,?,?)";
-                        st1=cn1.prepareStatement(query);
-                        st1.setString(1, this.ClientUsername);
-                        st1.setString(2,clienthandler.ClientUsername);
-                        st1.setString(3,messagefromclient);
                         
-                        st1.executeUpdate();
-                         
+                        
+                        if(tableExist(Table_Name,cn1)==1)
+                        {
+                            insertIntoTable(Table_Name,this.ClientUsername,clienthandler.ClientUsername,cn1,messagefromclient);
+                        }
+                        else
+                        {       createTable(Table_Name,cn1);
+                                insertIntoTable(Table_Name,this.ClientUsername,clienthandler.ClientUsername,cn1,messagefromclient);
+                                
+                        }
+                        }     
                         
                     }
                   
                     broadcastmessage(messagefromclient,this.oi,this.os);
 
                 }
+               
                 catch(IOException e){
                     e.printStackTrace();
                     break;
@@ -327,6 +383,11 @@ class ClientHandler  implements Runnable{
             else if(val==6){//to fetch details of a class
                 this.cls=(int)oi.readInt();
                 os.writeObject(StudentsInClass(cn));
+            }
+            else if(val==7)
+            {
+                os.writeObject(fetchUsername(cn));
+      
             }
             //s.close();
         }while(true);
