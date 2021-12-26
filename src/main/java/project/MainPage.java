@@ -26,7 +26,8 @@ public class MainPage extends javax.swing.JFrame {
     private Socket s;
     private ObjectInputStream oi;
     private ObjectOutputStream os;
-    public MainPage(Socket s,ObjectInputStream oi, ObjectOutputStream os) {
+    private int cls;
+    public MainPage(Socket s,ObjectInputStream oi, ObjectOutputStream os ) {
         initComponents();
         setLocationRelativeTo(null);
         setVisible(true);
@@ -42,7 +43,7 @@ public class MainPage extends javax.swing.JFrame {
         try{
             this.toBack();
             this.dispose();
-            new Class(this.s,this.oi,this.os).toFront();
+            new Class(this.s,this.oi,this.os,this.cls).toFront();
             this.toFront();
             
         }
@@ -458,6 +459,7 @@ public class MainPage extends javax.swing.JFrame {
             // TODO add your handling code here:
             os.writeInt(6);os.flush();
             os.writeInt(8);os.flush();
+            this.cls=8;
             int verify=(int)oi.readInt();
             if(verify==1){
                 this.OpenClassPage();
@@ -477,6 +479,7 @@ public class MainPage extends javax.swing.JFrame {
             // TODO add your handling code here:
             os.writeInt(6);os.flush();
             os.writeInt(9);os.flush();
+            this.cls=9;
             int verify=(int)oi.readInt();
             if(verify==1){
                 this.OpenClassPage();
@@ -495,6 +498,7 @@ public class MainPage extends javax.swing.JFrame {
             // TODO add your handling code here:
             os.writeInt(6);os.flush();
             os.writeInt(10);os.flush();
+            this.cls=10;
            int verify=(int)oi.readInt();
             if(verify==1){
                 this.OpenClassPage();
@@ -513,6 +517,7 @@ public class MainPage extends javax.swing.JFrame {
             // TODO add your handling code here:
             os.writeInt(6);os.flush();
             os.writeInt(11);os.flush();
+            this.cls=11;
             int verify=(int)oi.readInt();
             if(verify==1){
                 this.OpenClassPage();
@@ -529,6 +534,7 @@ public class MainPage extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
             // TODO add your handling code here:
+            this.cls=12;
             os.writeInt(6);os.flush();
             os.writeInt(12);os.flush();
             int verify=(int)oi.readInt();

@@ -19,7 +19,7 @@ import javax.mail.internet.MimeMessage;
  * @author hp
  */
 public class Email_Verify {
-    private static String Email="meenakshiparihar789@gmail.com",pass="Chilllite789";
+    private static String Email="anokhipehelotp@gmail.com",pass="Aplotp@123";
     public Email_Verify(String dest,String otp){
      System.out.println("preparing");
      String message="Hello , User this is your otp for email verification "+otp;    

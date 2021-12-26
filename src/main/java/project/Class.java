@@ -12,6 +12,7 @@ import java.net.Socket;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -27,13 +28,15 @@ public class Class extends javax.swing.JFrame {
     private ObjectInputStream oi;
     private ObjectOutputStream os;
     private Vector<Student> Stud;
-    public Class(Socket s,ObjectInputStream oi, ObjectOutputStream os) throws IOException {
+    private int cls;
+    public Class(Socket s,ObjectInputStream oi, ObjectOutputStream os,int cls) throws IOException {
         initComponents();
         setLocation(200,20);
         setVisible(true);
         this.s=s;
         this.oi=oi;
         this.os=os; 
+        this.cls=cls;
         this.FillTable();
     }
     public Class() {
@@ -46,6 +49,8 @@ public class Class extends javax.swing.JFrame {
             int size=Stud.size();
             int i=0;
             DefaultTableModel dtm= (DefaultTableModel)jTable1.getModel();
+             dtm.getDataVector().removeAllElements();
+             revalidate();
             while(size>0){
                 dtm.addRow(new Object[]{Stud.get(i).getRegNo(),Stud.get(i).getName(),
                 Stud.get(i).getSchool(),Stud.get(i).getMobile(),Stud.get(i).getAdd()});//Adding row in Table
@@ -73,7 +78,7 @@ public class Class extends javax.swing.JFrame {
         Insert = new javax.swing.JMenuItem();
         Delete = new javax.swing.JMenuItem();
         ShowAll = new javax.swing.JMenuItem();
-        Modify = new javax.swing.JMenuItem();
+        Refresh = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         Result = new javax.swing.JMenuItem();
         Attendence = new javax.swing.JMenuItem();
@@ -131,8 +136,13 @@ public class Class extends javax.swing.JFrame {
         ShowAll.setText("Show all");
         jMenu1.add(ShowAll);
 
-        Modify.setText("Modify");
-        jMenu1.add(Modify);
+        Refresh.setText("Refresh");
+        Refresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RefreshActionPerformed(evt);
+            }
+        });
+        jMenu1.add(Refresh);
 
         jMenuBar1.add(jMenu1);
 
@@ -193,6 +203,24 @@ public class Class extends javax.swing.JFrame {
         this.toFront();
     }//GEN-LAST:event_BackActionPerformed
 
+    private void RefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefreshActionPerformed
+        try {
+            // TODO add your handling code here:
+            os.writeInt(6);os.flush();
+            os.writeInt(this.cls);os.flush();
+            int verify=(int)oi.readInt();
+            if(verify==1){
+                this.FillTable();
+            }
+            else{
+                JOptionPane.showMessageDialog(null,"HackerMan","Login First",2);
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Class.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_RefreshActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -233,7 +261,7 @@ public class Class extends javax.swing.JFrame {
     private javax.swing.JMenuItem Back;
     private javax.swing.JMenuItem Delete;
     private javax.swing.JMenuItem Insert;
-    private javax.swing.JMenuItem Modify;
+    private javax.swing.JMenuItem Refresh;
     private javax.swing.JMenuItem Result;
     private javax.swing.JMenuItem ShowAll;
     private javax.swing.JMenu jMenu1;

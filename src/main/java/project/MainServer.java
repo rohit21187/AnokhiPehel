@@ -116,6 +116,7 @@ class ClientHandler  implements Runnable{
         return username_exist;
     }
     private int RegisterUserInDB(Registration std1,Connection cn) throws SQLException{
+        try{
         String query="INSERT INTO users (`First_Name`, `Last_Name`, `Registration_Number`, `Mobile`, `Gender`, `Image`, `UserName`, `Password`,`year`) VALUES (?,?,?,?,?,?,?,?,?)";
         PreparedStatement ps=null;
         ResultSet rs=null;    
@@ -145,6 +146,10 @@ class ClientHandler  implements Runnable{
             return 0;
 
         } 
+        }
+        catch(Exception e){
+            return 0;
+        }
     }
     private void OTPSetter(){
          Random rnd = new Random();
@@ -159,6 +164,7 @@ class ClientHandler  implements Runnable{
         return 0;
     }
     private int RegisterStudentInDB(Student std1, Connection cn) throws SQLException {
+        try{
         String query="INSERT INTO StudentDetail (`RegNo`,`Name`, `Mobile`, `Address`, `School`,`Class`) VALUES (?,?,?,?,?,?)";
         PreparedStatement ps=null;
         ResultSet rs=null;    
@@ -169,13 +175,18 @@ class ClientHandler  implements Runnable{
         ps.setString(4,std1.getAdd());
         ps.setString(5,std1.getSchool());
         ps.setString(6,std1.getCls());
-        System.out.println("Statemend prepared");
-        if(ps.executeUpdate()!=0){
-           return 1;
-        }
-        else{
-            return 0;
+            System.out.println("Statemend prepared");
 
+            if(ps.executeUpdate()!=0){
+               return 1;
+            }
+            else{
+                return 0;
+
+            }
+        }
+        catch(Exception e){
+            return 0;
         }
     }
     private String CreateRegNo(Connection cn,String cls)throws SQLException {
@@ -263,13 +274,13 @@ class ClientHandler  implements Runnable{
             }
             else if(val==2){ //register user in  db
                 this.std = (Registration)oi.readObject(); //reading user details//System.out.println("read reg obj");
-                int cu= CheckUserName(std.getusername());
+                int cu= CheckUserName(this.std.getusername());
                 if(cu==1){//System.out.println("checked user");
                     os.writeInt(1);
                     os.flush();//System.out.println("registering"); 
                     this.VerificationTimes=3;
                     OTPSetter(); //sets the otp
-                    //new Email_Verify(this.std.getusername(),this.otp);//email sent
+                    new Email_Verify(this.std.getusername(),this.otp);//email sent
                 }
                 else{
                     os.writeInt(0);
@@ -281,7 +292,7 @@ class ClientHandler  implements Runnable{
                 if(this.VerificationTimes>0){
                     String s=oi.readUTF();
                     if(OTPChecker(s)==1){
-                        os.writeInt(RegisterUserInDB(std,cn));//System.out.println("Registered");
+                        os.writeInt(RegisterUserInDB(this.std,cn));//System.out.println("Registered");
                         os.flush();
                     }
                     else{
