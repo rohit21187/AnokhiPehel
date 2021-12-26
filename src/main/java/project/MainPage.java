@@ -11,6 +11,7 @@ import java.awt.Color;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
 import javax.swing.border.Border;
 
 /**
@@ -422,7 +423,14 @@ public class MainPage extends javax.swing.JFrame {
             // TODO add your handling code here:
             os.writeInt(6);os.flush();
             os.writeInt(8);os.flush();
-            this.OpenClassPage();
+            int verify=(int)oi.readInt();
+            if(verify==1){
+                this.OpenClassPage();
+            }
+            else{
+                JOptionPane.showMessageDialog(null,"HackerMan","Login First",2);
+            }
+            
         } catch (IOException ex) {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -434,7 +442,13 @@ public class MainPage extends javax.swing.JFrame {
             // TODO add your handling code here:
             os.writeInt(6);os.flush();
             os.writeInt(9);os.flush();
-            this.OpenClassPage();
+            int verify=(int)oi.readInt();
+            if(verify==1){
+                this.OpenClassPage();
+            }
+            else{
+                JOptionPane.showMessageDialog(null,"HackerMan","Login First",2);
+            }
         } catch (IOException ex) {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -446,7 +460,13 @@ public class MainPage extends javax.swing.JFrame {
             // TODO add your handling code here:
             os.writeInt(6);os.flush();
             os.writeInt(10);os.flush();
-            this.OpenClassPage();
+           int verify=(int)oi.readInt();
+            if(verify==1){
+                this.OpenClassPage();
+            }
+            else{
+                JOptionPane.showMessageDialog(null,"HackerMan","Login First",2);
+            }
         } catch (IOException ex) {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -458,7 +478,13 @@ public class MainPage extends javax.swing.JFrame {
             // TODO add your handling code here:
             os.writeInt(6);os.flush();
             os.writeInt(11);os.flush();
-            this.OpenClassPage();
+            int verify=(int)oi.readInt();
+            if(verify==1){
+                this.OpenClassPage();
+            }
+            else{
+                JOptionPane.showMessageDialog(null,"HackerMan","Login First",2);
+            }
         } catch (IOException ex) {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -470,7 +496,13 @@ public class MainPage extends javax.swing.JFrame {
             // TODO add your handling code here:
             os.writeInt(6);os.flush();
             os.writeInt(12);os.flush();
-            this.OpenClassPage();
+            int verify=(int)oi.readInt();
+            if(verify==1){
+                this.OpenClassPage();
+            }
+            else{
+                JOptionPane.showMessageDialog(null,"HackerMan","Login First",2);
+            }
         } catch (IOException ex) {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         }

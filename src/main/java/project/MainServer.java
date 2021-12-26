@@ -217,7 +217,7 @@ class ClientHandler  implements Runnable{
             ResultSet rs=null;
             
             do{
-                System.out.println("val");
+                System.out.print("val: ");
                 int val= (int)oi.readInt();
                 System.out.println(val);
                 if(val==1){ //check login
@@ -286,14 +286,32 @@ class ClientHandler  implements Runnable{
                     break;
                 }
             }
-            else if(val==5){// insert anew student in db
-                Student student = (Student)oi.readObject();
-                os.writeInt(RegisterStudentInDB(student,cn));
-                os.flush();
+            else if(val==5){// insert a new student in db
+                if(this.verified==true){
+                    os.writeInt(1);
+                    Student student = (Student)oi.readObject();
+                    os.writeInt(RegisterStudentInDB(student,cn));
+                    os.flush();
+                }
+                else{
+                    os.writeInt(0);
+                }
+                
             }
             else if(val==6){//to fetch details of a class
                 this.cls=(int)oi.readInt();
-                os.writeObject(StudentsInClass(cn));
+                if(this.verified==true){
+                    os.writeInt(1);
+                    os.writeObject(StudentsInClass(cn));
+                    os.flush();
+                }
+                else{
+                    os.writeInt(0);
+                }
+                
+            }
+            else if(val ==7){
+                
             }
             //s.close();
         }while(true);
@@ -309,6 +327,8 @@ class ClientHandler  implements Runnable{
         
         finally{
             //os.flush();
+            this.ClientUsername="";
+            this.verified=false;
         }
     }
     private void broadcastmessage(String messagetosend,ObjectInputStream oi,ObjectOutputStream os){
