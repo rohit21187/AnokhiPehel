@@ -333,7 +333,7 @@ class ClientHandler  implements Runnable{
                 }
                 
             }
-            else if(val ==7){//fetch profile details
+            else if(val ==9){//fetch profile details
                 if(this.verified==true){
                     os.writeInt(1);
                     System.out.println("verified");
@@ -344,17 +344,7 @@ class ClientHandler  implements Runnable{
                     os.writeInt(0);
                 }
             }
-            else if(val ==7){//fetch profile details
-                if(this.verified==true){
-                    os.writeInt(1);
-                    os.writeObject(ProfileDetails(cn));
-                    os.flush();
-                }
-                else{
-                    os.writeInt(0);
-                }
-            }
-            else if(val ==8){//logout
+            else if(val ==10){//logout
                 if(this.verified==true){
                     os.writeInt(1);
                     System.out.println("verified");

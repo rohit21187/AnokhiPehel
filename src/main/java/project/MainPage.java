@@ -386,7 +386,7 @@ public class MainPage extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
             // TODO add your handling code here:
-            os.writeInt(7);os.flush();
+            os.writeInt(9);os.flush();
             int verify=(int)oi.readInt();
             if(verify==1){
                 this.toBack();
@@ -432,7 +432,7 @@ public class MainPage extends javax.swing.JFrame {
         try {
             // TODO add your handling code here:
             //Will be added in case of new notifiaction
-            os.writeInt(8);os.flush();
+            os.writeInt(10);os.flush();
             int verify=(int)oi.readInt();
             if(verify==1){
                this.dispose();
