@@ -28,6 +28,7 @@ public class MainPage extends javax.swing.JFrame {
     private ObjectOutputStream os;
     private int cls;
     private SearchPeopeForChat spfc=null;
+    private int flag=0;
     public MainPage(Socket s,ObjectInputStream oi, ObjectOutputStream os ) {
         initComponents();
         setLocationRelativeTo(null);
@@ -417,7 +418,7 @@ public class MainPage extends javax.swing.JFrame {
             
             this.spfc=new SearchPeopeForChat(this.s,this.os,this.oi);
             this.spfc.setVisible(true);
-            
+            this.flag=1;
             //this.setVisible(false);
         }
         catch(Exception e){
@@ -437,7 +438,7 @@ public class MainPage extends javax.swing.JFrame {
             int verify=(int)oi.readInt();
             if(verify==1){
                this.dispose();
-               if(this.spfc!=null)
+               if(this.flag==1)
                 this.spfc.dispose();
                 this.s.close();
             }
