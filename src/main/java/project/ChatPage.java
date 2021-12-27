@@ -8,6 +8,7 @@ package project;
 import java.awt.Image;
 import java.net.*;
 import java.io.*;
+import java.util.*;
 import javax.swing.ImageIcon;
 
 /**
@@ -18,7 +19,7 @@ public class ChatPage extends javax.swing.JFrame {
     private Socket socket=null;
     private ObjectInputStream oi;
     private ObjectOutputStream os;
-    private String username;
+    private String senderusername,username;
     /**
      * Creates new form ChatPage
      */
@@ -26,7 +27,7 @@ public class ChatPage extends javax.swing.JFrame {
     {
        initComponents(); 
     }
-    public ChatPage(Socket s,ObjectInputStream oi, ObjectOutputStream os,String username) {
+    public ChatPage(Socket s,ObjectInputStream oi, ObjectOutputStream os,String senderusername) {
         setUndecorated(true);
         initComponents();
         setLocationRelativeTo(null);
@@ -52,11 +53,17 @@ public class ChatPage extends javax.swing.JFrame {
       this.socket=s;
       this.oi=oi;
       this.os=os;
-      this.username=username;
-      os.writeUTF(username);
+      this.senderusername=senderusername;
+      name.setText(senderusername);
+      
       puttext.setLineWrap(true);
       puttext.setWrapStyleWord(true);
       listenformessage();
+//       os.writeInt(8);
+//       os.flush();
+//       
+//      fetchMessage();
+     
        }
        catch(Exception e)
        {
@@ -64,6 +71,28 @@ public class ChatPage extends javax.swing.JFrame {
        }
         
     }
+    
+//    private void fetchMessage() throws IOException
+//    {   try
+//        {
+//        os.writeUTF(this.username);
+//        os.flush();
+//        
+//        Vector<String> messages=(Vector<String>)oi.readObject();
+//        for(String msg:messages)
+//        {
+//            puttext.setText(msg);
+//            puttext.setText("\n");
+//        }
+//        }
+//        catch(ClassNotFoundException e)
+//        {
+//            System.out.println();
+//        }
+//        
+//        
+//        
+//    }
 //        private void startReading()
 //        {
 //            try{
@@ -90,7 +119,7 @@ public class ChatPage extends javax.swing.JFrame {
                 {
                     try
                     {
-                        msg=oi.readUTF();
+                         msg=(String) oi.readUTF();
                         puttext.append(msg+"\n");
                         
                     }catch(Exception e)
@@ -118,8 +147,7 @@ public class ChatPage extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         back = new javax.swing.JLabel();
-        video = new javax.swing.JLabel();
-        call = new javax.swing.JLabel();
+        name = new javax.swing.JLabel();
         text = new javax.swing.JTextField();
         send = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -139,6 +167,9 @@ public class ChatPage extends javax.swing.JFrame {
             }
         });
 
+        name.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        name.setForeground(new java.awt.Color(255, 255, 255));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -146,20 +177,18 @@ public class ChatPage extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(back, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(video, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
-                .addComponent(call, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18))
+                .addGap(44, 44, 44)
+                .addComponent(name, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(call, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(video, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(back, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(name, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(back, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(98, 98, 98))
         );
 
@@ -231,8 +260,9 @@ public class ChatPage extends javax.swing.JFrame {
         try
         {
             this.os.writeInt(4);
+            os.flush();
         String out=text.getText();
-        this.os.writeUTF(username+": "+out);
+        this.os.writeUTF(out);
         this.os.flush();
         puttext.append("Me :"+out+"\n");
         text.setText("");
@@ -282,14 +312,13 @@ public class ChatPage extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel back;
-    private javax.swing.JLabel call;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel name;
     private javax.swing.JTextArea puttext;
     private javax.swing.JButton send;
     private javax.swing.JTextField text;
-    private javax.swing.JLabel video;
     // End of variables declaration//GEN-END:variables
 }
