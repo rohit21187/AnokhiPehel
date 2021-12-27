@@ -268,7 +268,7 @@ class ClientHandler  implements Runnable{
     }
     private void createTable(String Table_Name,Connection cn1)throws SQLException 
     {
-        String query="create table "+Table_Name+"(To VARCHAR(255) not null, "+"From VARCHAR(255) not null, "+"Message VARCHAR(8000) not null)";
+        String query="create table "+Table_Name+"(To VARCHAR(255) not null,From VARCHAR(255) not null ,Message VARCHAR(8000) not null)";
         PreparedStatement st1=null;
          st1=cn1.prepareStatement(query);
          st1.executeUpdate();
