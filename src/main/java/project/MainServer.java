@@ -329,6 +329,16 @@ class ClientHandler  implements Runnable{
                        }     
                      
     }
+    private void resetPassword(String pass,Connection cn) throws SQLException
+    {
+        String query="update users set password=? where UserName=?";
+        PreparedStatement ps=null;
+        ps=cn.prepareStatement(query);
+        ps.setString(1,pass);
+        ps.setString(2,this.ClientUsername);
+        ps.executeUpdate();
+        
+    }
     
 
     @Override
@@ -488,13 +498,50 @@ class ClientHandler  implements Runnable{
                 os.writeObject(message);
                 
             }
-//            else if(val==12)
-//            {
-//                String user=getUsername(this.ClientUsername,cn);
-//                os.writeUTF(user);
-//                os.flush();
-//                
-//            }
+            else if(val==12)
+            {
+                this.ClientUsername=(String) oi.readUTF();
+                int i=CheckUserName(this.ClientUsername);
+                if(i==0)
+                {
+                   os.writeInt(1);
+                   os.flush();
+                    this.VerificationTimes=3;
+                    OTPSetter(); //sets the otp
+                    new Email_Verify(this.ClientUsername,this.otp);//email sent
+                }
+                else{
+                    os.writeInt(0);
+                    os.flush();
+                }
+                
+                
+            }
+            else if(val==13)
+            {
+                String password=(String) oi.readUTF();
+                resetPassword(password,cn);
+                
+            }
+                else if(val==14){ //verify emial otp
+                this.VerificationTimes--;
+                if(this.VerificationTimes>0){
+                    String s=oi.readUTF();
+                    if(OTPChecker(s)==1){
+                        os.writeInt(1);//System.out.println("Registered");
+                        os.flush();
+                    }
+                    else{
+                        os.writeInt(2);
+                        os.flush();
+                    }
+                }
+                else{
+                    os.writeInt(-1); //no more chances left
+                    os.flush();
+                }
+                
+            }
             //s.close();
         }while(true);
         }

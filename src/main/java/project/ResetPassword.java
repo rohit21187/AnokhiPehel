@@ -19,29 +19,28 @@ import javax.swing.JOptionPane;
  *
  * @author hp
  */
-class ForgotPassword extends javax.swing.JFrame {
+public class ResetPassword extends javax.swing.JFrame {
 
     /**
-     * Creates new form ForgotPassword
+     * Creates new form ResetPassword
      */
-     private Socket s;
-    private ObjectInputStream oi;
+    private Socket s;
+    PrintWriter write;
+    BufferedReader reader;
+    private ObjectInputStream oi; 
     private ObjectOutputStream os;
-    Thread t;
-    private String userid="";
-    public ForgotPassword(Socket s,ObjectInputStream oi, ObjectOutputStream os) throws IOException {
+    public ResetPassword(Socket s,ObjectInputStream oi, ObjectOutputStream os) {
         initComponents();
-        this.s=s;
         setLocation(300,50);
+        this.s=s;
+        this.os=os;
+        this.oi=oi;
         setVisible(true);
-        this.oi = oi;System.out.println("val");
-        this.os = os;System.out.println("out of constructor");
-        
     }
-    public ForgotPassword(){
+    public ResetPassword() {
         initComponents();
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -53,32 +52,23 @@ class ForgotPassword extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        username = new javax.swing.JTextField();
         ok = new javax.swing.JButton();
-        Back = new javax.swing.JButton();
+        password = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(0, 51, 102));
+        jPanel1.setBackground(new java.awt.Color(0, 0, 102));
 
-        jLabel1.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Enter Your Email Here");
+        jLabel1.setText("Enter Your New Password Here");
 
-        ok.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        ok.setBackground(new java.awt.Color(0, 0, 102));
+        ok.setForeground(new java.awt.Color(255, 255, 255));
         ok.setText("OK");
         ok.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 okActionPerformed(evt);
-            }
-        });
-
-        Back.setBackground(new java.awt.Color(255, 255, 255));
-        Back.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        Back.setText("Back");
-        Back.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BackActionPerformed(evt);
             }
         });
 
@@ -89,29 +79,25 @@ class ForgotPassword extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(36, 36, 36)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(80, 80, 80)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                            .addComponent(password)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(111, 111, 111)
-                        .addComponent(ok, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(74, 74, 74)
-                        .addComponent(Back)))
-                .addContainerGap(173, Short.MAX_VALUE))
+                        .addGap(171, 171, 171)
+                        .addComponent(ok, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(93, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(46, 46, 46)
-                .addComponent(jLabel1)
+                .addGap(69, 69, 69)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ok)
-                    .addComponent(Back))
-                .addContainerGap(123, Short.MAX_VALUE))
+                .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29)
+                .addComponent(ok, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(128, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -122,7 +108,7 @@ class ForgotPassword extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -130,53 +116,28 @@ class ForgotPassword extends javax.swing.JFrame {
 
     private void okActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okActionPerformed
         // TODO add your handling code here:
-        if(username.getText().trim().equals(""))
+        if(password.getText().equals(""))
         {
-         JOptionPane.showMessageDialog(null,"Fill your college ID");    
+            JOptionPane.showMessageDialog(null,"Enter Your Password");       
         }
         else
-        {  this.userid=username.getText();
+        {
             try {
-                os.writeInt(12);
+                os.writeInt(13);
                 os.flush();
-                os.writeUTF(userid);
+                os.writeUTF(password.getText());
                 os.flush();
-                if(oi.readInt()==1)
-                {
-                VerificationForForgot v= new VerificationForForgot(this.s,this.oi,this.os);
-                v.setVisible(true);
+                
+                JOptionPane.showMessageDialog(null,"Password is reset successfully"); 
+                new NewJFrame(this.s,this.oi,this.os).toFront();
                 this.dispose();
-                }
-                else
-                {
-                    JOptionPane.showMessageDialog(null,"Invalid email address enter valid","error",2);
-                }
-                
-                
                 
                 
             } catch (IOException ex) {
-                Logger.getLogger(ForgotPassword.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ResetPassword.class.getName()).log(Level.SEVERE, null, ex);
             }
-           
-           
-           
         }
     }//GEN-LAST:event_okActionPerformed
-
-    private void BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackActionPerformed
-        // TODO add your handling code here:
-        this.toBack();
-        this.dispose();
-         try {
-             new NewJFrame(this.s,this.oi,this.os).toFront();
-         } catch (IOException ex) {
-             Logger.getLogger(ForgotPassword.class.getName()).log(Level.SEVERE, null, ex);
-         }
-         this.toFront();
-        
-        
-    }//GEN-LAST:event_BackActionPerformed
 
     /**
      * @param args the command line arguments
@@ -195,31 +156,28 @@ class ForgotPassword extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ForgotPassword.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ResetPassword.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ForgotPassword.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ResetPassword.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ForgotPassword.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ResetPassword.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ForgotPassword.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ResetPassword.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ForgotPassword().setVisible(true);
+                new ResetPassword().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton Back;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton ok;
-    private javax.swing.JTextField username;
+    private javax.swing.JTextField password;
     // End of variables declaration//GEN-END:variables
-
-    
 }

@@ -13,24 +13,23 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ButtonGroup;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author hp
  */
-public class Verification extends javax.swing.JFrame {
+public class VerificationForForgot extends javax.swing.JFrame {
 
     /**
-     * Creates new form Verification
+     * Creates new form VerificationForForgot
      */
     private Socket s;
     PrintWriter write;
     BufferedReader reader;
     private ObjectInputStream oi; 
     private ObjectOutputStream os;
-    public Verification(Socket s,ObjectInputStream oi, ObjectOutputStream os) {
+    public VerificationForForgot(Socket s,ObjectInputStream oi, ObjectOutputStream os) {
         initComponents();
         setLocation(300,50);
         this.s=s;
@@ -38,7 +37,7 @@ public class Verification extends javax.swing.JFrame {
         this.oi=oi;
         setVisible(true);
     }
-    public Verification() {
+    public VerificationForForgot() {
         initComponents();
     }
 
@@ -98,7 +97,7 @@ public class Verification extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(85, Short.MAX_VALUE))
+                .addContainerGap(121, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -111,7 +110,7 @@ public class Verification extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Submit)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(159, Short.MAX_VALUE))
+                .addContainerGap(142, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -131,28 +130,27 @@ public class Verification extends javax.swing.JFrame {
     private void SubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SubmitActionPerformed
         try {
             // TODO add your handling code here:
-            os.writeInt(3); //server starts veriying
+            os.writeInt(14); //server starts veriying
             os.flush();
             os.writeUTF(jTextField1.getText());
             os.flush();
             int val =(int)oi.readInt();
             if(val==1){
-                JOptionPane.showMessageDialog(null,"Your Account Has Been Created"); 
-                
-                new NewJFrame(this.s,this.oi,this.os).toFront();
+                ResetPassword rp=new ResetPassword(this.s,this.oi,this.os);
+                rp.setVisible(true);
                 this.dispose();
             }
             else if(val==2){
-                JOptionPane.showMessageDialog(null,"Incorrect try again"); 
+                JOptionPane.showMessageDialog(null,"Incorrect try again");
             }
             else if(val==-1){
-                JOptionPane.showMessageDialog(null,"You have tried all 3 chances Please try after some time"); 
-               new NewJFrame(this.s,this.oi,this.os).toFront();
+                JOptionPane.showMessageDialog(null,"You have tried all 3 chances Please try after some time");
+                new NewJFrame(this.s,this.oi,this.os).toFront();
                 this.dispose();
             }
             else{
-               JOptionPane.showMessageDialog(null,"Something went wrong Please try after some time"); 
-               new NewJFrame(this.s,this.oi,this.os).toFront();
+                JOptionPane.showMessageDialog(null,"Something went wrong Please try after some time");
+                new NewJFrame(this.s,this.oi,this.os).toFront();
                 this.dispose();
             }
         } catch (IOException ex) {
@@ -165,13 +163,12 @@ public class Verification extends javax.swing.JFrame {
         ForgotPassword fp;
         try {
             fp = new ForgotPassword(this.s,this.oi,this.os);
-             fp.setVisible(true);
-             this.dispose();
+            fp.setVisible(true);
+            this.dispose();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-       
-        
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -191,20 +188,20 @@ public class Verification extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Verification.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VerificationForForgot.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Verification.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VerificationForForgot.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Verification.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VerificationForForgot.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Verification.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VerificationForForgot.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Verification().setVisible(true);
+                new VerificationForForgot().setVisible(true);
             }
         });
     }
