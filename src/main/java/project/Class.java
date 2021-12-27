@@ -120,6 +120,7 @@ public class Class extends javax.swing.JFrame {
 
         jMenuBar1.setBackground(new java.awt.Color(0, 51, 102));
 
+        jMenu1.setForeground(new java.awt.Color(255, 255, 255));
         jMenu1.setText("Manage");
 
         Insert.setText("Insert ");
@@ -146,6 +147,7 @@ public class Class extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu1);
 
+        jMenu2.setForeground(new java.awt.Color(255, 255, 255));
         jMenu2.setText("Other");
 
         Result.setText("Result");
