@@ -394,8 +394,9 @@ public class Register_Form extends javax.swing.JFrame {
         std1.setmobile(Mno.getText());
         std1.setusername(Username.getText());
         std1.setpassword(String.valueOf(pass.getPassword()));
-        if(jComboBox1.getSelectedItem().equals("1")){
-            std1.setyear(1);
+        std1.setyear((String) jComboBox1.getSelectedItem());
+        /*if(jComboBox1.getSelectedItem().equals("1")){
+            std1.setyear(jComboBox1.getSelectedItem());
         }
         else if(jComboBox1.getSelectedItem().equals("2")){
             std1.setyear(2);
@@ -405,7 +406,7 @@ public class Register_Form extends javax.swing.JFrame {
         }
         else if(jComboBox1.getSelectedItem().equals("4")) {
             std1.setyear(4);
-        }
+        }*/
         //std1.setyear((int) );
         if(jRadioButton1.isSelected()){
             std1.setgender("Male");

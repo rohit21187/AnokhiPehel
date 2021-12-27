@@ -32,10 +32,13 @@
                 <Property name="text" type="java.lang.String" value="Show all"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="Modify">
+            <MenuItem class="javax.swing.JMenuItem" name="Refresh">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Modify"/>
+                <Property name="text" type="java.lang.String" value="Refresh"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RefreshActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>

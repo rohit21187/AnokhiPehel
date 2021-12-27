@@ -213,17 +213,24 @@ public class InsertData extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
             Student std= new Student(NameT.getText(),MobT.getText(),AddT.getText(),SchoolT.getText(),getClassValue());
-            os.writeInt(5);
-            os.writeObject(std);
-            os.flush();
-            int verify = (int)oi.readInt();
-            if(verify==1){
-                JOptionPane.showMessageDialog(null,"Success","Inserted Succesfully",2);
-                this.dispose();
+            os.writeInt(5);os.flush();
+            int ver=(int)oi.readInt();
+            if(ver==1){
+                os.writeObject(std);
+                os.flush();
+                int verify = (int)oi.readInt();
+                if(verify==1){
+                    JOptionPane.showMessageDialog(null,"Success","Inserted Succesfully",2);
+                    this.dispose();
+                }
+                else{
+                    JOptionPane.showMessageDialog(null,"Failed","Please check details",2);
+                }
             }
             else{
-                JOptionPane.showMessageDialog(null,"Failed","Please check details",2);
+                JOptionPane.showMessageDialog(null,"HackerMan","Login First",2);
             }
+            
         } catch (IOException ex) {
             Logger.getLogger(InsertData.class.getName()).log(Level.SEVERE, null, ex);
         }

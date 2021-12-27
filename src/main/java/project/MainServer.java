@@ -118,7 +118,8 @@ class ClientHandler  implements Runnable{
         return username_exist;
     }
     private int RegisterUserInDB(Registration std1,Connection cn) throws SQLException{
-        String query="INSERT INTO users (`First_Name`, `Last_Name`, `Registration_Number`, `Mobile`, `Gender`, `Image`, `UserName`, `Password`) VALUES (?,?,?,?,?,?,?,?)";
+        try{
+        String query="INSERT INTO users (`First_Name`, `Last_Name`, `Registration_Number`, `Mobile`, `Gender`, `Image`, `UserName`, `Password`,`year`) VALUES (?,?,?,?,?,?,?,?,?)";
         PreparedStatement ps=null;
         ResultSet rs=null;    
         ps=cn.prepareStatement(query);
@@ -129,6 +130,7 @@ class ClientHandler  implements Runnable{
         ps.setString(5,std1.getgender());
         ps.setString(7,std1.getusername());
         ps.setString(8,std1.getpassword());
+        ps.setString(9,std1.getyear());
         ps.setNull(6,java.sql.Types.NULL);
         /*if(jLabel12.getText()!="Image Path")
         {
@@ -146,6 +148,10 @@ class ClientHandler  implements Runnable{
             return 0;
 
         } 
+        }
+        catch(Exception e){
+            return 0;
+        }
     }
     private void OTPSetter(){
          Random rnd = new Random();
@@ -160,6 +166,7 @@ class ClientHandler  implements Runnable{
         return 0;
     }
     private int RegisterStudentInDB(Student std1, Connection cn) throws SQLException {
+        try{
         String query="INSERT INTO StudentDetail (`RegNo`,`Name`, `Mobile`, `Address`, `School`,`Class`) VALUES (?,?,?,?,?,?)";
         PreparedStatement ps=null;
         ResultSet rs=null;    
@@ -170,12 +177,18 @@ class ClientHandler  implements Runnable{
         ps.setString(4,std1.getAdd());
         ps.setString(5,std1.getSchool());
         ps.setString(6,std1.getCls());
-        if(ps.executeUpdate()!=0){
-           return 1;
-        }
-        else{
-            return 0;
+            System.out.println("Statemend prepared");
 
+            if(ps.executeUpdate()!=0){
+               return 1;
+            }
+            else{
+                return 0;
+
+            }
+        }
+        catch(Exception e){
+            return 0;
         }
     }
     private String CreateRegNo(Connection cn,String cls)throws SQLException {
@@ -186,7 +199,7 @@ class ClientHandler  implements Runnable{
         rs = ps.executeQuery(query);
       //Retrieving the result
         rs.next();
-        int count = rs.getInt(1);
+        int count = rs.getInt(1); 
         count++;
         String ans=cls+count;
         return ans;
@@ -205,6 +218,7 @@ class ClientHandler  implements Runnable{
         }
         return Stud;
     }
+<<<<<<< HEAD
     
     private String getEmail(String first_name,Connection cn)throws SQLException
     {
@@ -283,6 +297,27 @@ class ClientHandler  implements Runnable{
         return username2+"_"+username1;
         
     }
+=======
+    private Registration ProfileDetails(Connection cn) throws SQLException {
+        System.out.println("in Profile details");
+        Registration user = null;
+        PreparedStatement ps=null;
+        ResultSet rs=null;  
+        String query="select * from users WHERE UserName=?";
+        ps=cn.prepareStatement(query);
+        ps.setString(1, this.ClientUsername);  
+        rs = ps.executeQuery();
+        while(rs.next()){
+            user= new Registration(rs.getString("first_name"),rs.getString("last_name"),rs.getString("Registration_Number"),rs.getString("Mobile"),rs.getString("year"),rs.getString("Gender"));
+            //String first_name,String last_name,String r_num,String mobile,int year, String gender)
+            return user;
+        }
+        System.out.println("out  Profile details");
+        return user;
+
+    }
+ 
+>>>>>>> main
     @Override
     public void run() {
         String messagefromclient;
@@ -301,7 +336,7 @@ class ClientHandler  implements Runnable{
             
             
             do{
-                System.out.println("val");
+                System.out.print("val: ");
                 int val= (int)oi.readInt();
                 System.out.println(val);
                 if(val==1){ //check login
@@ -327,13 +362,13 @@ class ClientHandler  implements Runnable{
             }
             else if(val==2){ //register user in  db
                 this.std = (Registration)oi.readObject(); //reading user details//System.out.println("read reg obj");
-                int cu= CheckUserName(std.getusername());
+                int cu= CheckUserName(this.std.getusername());
                 if(cu==1){//System.out.println("checked user");
                     os.writeInt(1);
                     os.flush();//System.out.println("registering"); 
                     this.VerificationTimes=3;
                     OTPSetter(); //sets the otp
-                    //new Email_Verify(this.std.getusername(),this.otp);//email sent
+                    new Email_Verify(this.std.getusername(),this.otp);//email sent
                 }
                 else{
                     os.writeInt(0);
@@ -345,7 +380,7 @@ class ClientHandler  implements Runnable{
                 if(this.VerificationTimes>0){
                     String s=oi.readUTF();
                     if(OTPChecker(s)==1){
-                        os.writeInt(RegisterUserInDB(std,cn));//System.out.println("Registered");
+                        os.writeInt(RegisterUserInDB(this.std,cn));//System.out.println("Registered");
                         os.flush();
                     }
                     else{
@@ -392,14 +427,53 @@ class ClientHandler  implements Runnable{
                     break;
                 }
             }
-            else if(val==5){// insert anew student in db
-                Student student = (Student)oi.readObject();
-                os.writeInt(RegisterStudentInDB(student,cn));
-                os.flush();
+            else if(val==5){// insert a new student in db
+                if(this.verified==true){
+                    os.writeInt(1);os.flush();
+                    Student student = (Student)oi.readObject();
+                    System.out.println("Read object");
+                    os.writeInt(RegisterStudentInDB(student,cn));
+                    os.flush();
+                }
+                else{
+                    os.writeInt(0);
+                }
+                
             }
             else if(val==6){//to fetch details of a class
                 this.cls=(int)oi.readInt();
-                os.writeObject(StudentsInClass(cn));
+                if(this.verified==true){
+                    os.writeInt(1);
+                    os.writeObject(StudentsInClass(cn));
+                    os.flush();
+                    System.out.println("out of 6");
+                }
+                else{
+                    os.writeInt(0);
+                }
+                
+            }
+            else if(val ==9){//fetch profile details
+                if(this.verified==true){
+                    os.writeInt(1);
+                    System.out.println("verified");
+                    os.writeObject(ProfileDetails(cn));
+                    os.flush();
+                }
+                else{
+                    os.writeInt(0);
+                }
+            }
+            else if(val ==10){//logout
+                if(this.verified==true){
+                    os.writeInt(1);
+                    System.out.println("verified");
+                    os.flush();
+                    break;
+                }
+                else{
+                    os.writeInt(0);
+                }
             }
             else if(val==7)
             {
@@ -436,6 +510,13 @@ class ClientHandler  implements Runnable{
         
         finally{
             //os.flush();
+            this.ClientUsername="";
+            this.verified=false;
+            try {
+                this.s.close();
+            } catch (IOException ex) {
+                Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
     
@@ -497,5 +578,5 @@ class ClientHandler  implements Runnable{
         }
 
     }    
-   
+  
 }
