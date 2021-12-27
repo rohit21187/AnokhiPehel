@@ -53,7 +53,9 @@ public class SearchPeopeForChat extends javax.swing.JFrame {
     private void fillList() throws IOException
     {   try
         {
+            System.out.println("in fill list");
         Vector<String> list=(Vector<String>) oi.readObject();
+        System.out.println("read object");
         TearcherList.setListData(list);
         }
         catch(ClassNotFoundException e)
