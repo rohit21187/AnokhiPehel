@@ -8,6 +8,7 @@ package project;
 import java.awt.Image;
 import java.net.*;
 import java.io.*;
+import java.util.*;
 import javax.swing.ImageIcon;
 
 /**
@@ -18,7 +19,7 @@ public class ChatPage extends javax.swing.JFrame {
     private Socket socket=null;
     private ObjectInputStream oi;
     private ObjectOutputStream os;
-    private String username;
+    private String senderusername,username;
     /**
      * Creates new form ChatPage
      */
@@ -26,7 +27,7 @@ public class ChatPage extends javax.swing.JFrame {
     {
        initComponents(); 
     }
-    public ChatPage(Socket s,ObjectInputStream oi, ObjectOutputStream os,String username) {
+    public ChatPage(Socket s,ObjectInputStream oi, ObjectOutputStream os,String senderusername) {
         setUndecorated(true);
         initComponents();
         setLocationRelativeTo(null);
@@ -52,13 +53,17 @@ public class ChatPage extends javax.swing.JFrame {
       this.socket=s;
       this.oi=oi;
       this.os=os;
-      this.username=username;
-      name.setText(username);
+      this.senderusername=senderusername;
+      name.setText(senderusername);
       
       puttext.setLineWrap(true);
       puttext.setWrapStyleWord(true);
-      fetchMessage();
       listenformessage();
+//       os.writeInt(8);
+//       os.flush();
+//       
+//      fetchMessage();
+     
        }
        catch(Exception e)
        {
@@ -67,10 +72,27 @@ public class ChatPage extends javax.swing.JFrame {
         
     }
     
-    private void fetchMessage()
-    {
-        
-    }
+//    private void fetchMessage() throws IOException
+//    {   try
+//        {
+//        os.writeUTF(this.username);
+//        os.flush();
+//        
+//        Vector<String> messages=(Vector<String>)oi.readObject();
+//        for(String msg:messages)
+//        {
+//            puttext.setText(msg);
+//            puttext.setText("\n");
+//        }
+//        }
+//        catch(ClassNotFoundException e)
+//        {
+//            System.out.println();
+//        }
+//        
+//        
+//        
+//    }
 //        private void startReading()
 //        {
 //            try{
@@ -97,7 +119,7 @@ public class ChatPage extends javax.swing.JFrame {
                 {
                     try
                     {
-                        msg=oi.readUTF();
+                         msg=(String) oi.readUTF();
                         puttext.append(msg+"\n");
                         
                     }catch(Exception e)
@@ -238,8 +260,9 @@ public class ChatPage extends javax.swing.JFrame {
         try
         {
             this.os.writeInt(4);
+            os.flush();
         String out=text.getText();
-        this.os.writeUTF(username+": "+out);
+        this.os.writeUTF(out);
         this.os.flush();
         puttext.append("Me :"+out+"\n");
         text.setText("");

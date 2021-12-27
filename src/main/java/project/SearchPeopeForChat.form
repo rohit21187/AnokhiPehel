@@ -47,7 +47,7 @@
               <Group type="102" alignment="0" attributes="0">
                   <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jScrollPane1" pref="485" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" pref="561" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -64,7 +64,7 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace pref="126" max="32767" attributes="0"/>
+                      <EmptySpace pref="130" max="32767" attributes="0"/>
                       <Component id="jLabel1" min="-2" pref="118" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="63" max="-2" attributes="0"/>
                       <Component id="refresh" min="-2" max="-2" attributes="0"/>
@@ -130,6 +130,7 @@
                 </Property>
               </Properties>
               <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="TearcherListMouseClicked"/>
                 <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="TearcherListKeyPressed"/>
               </Events>
               <AuxValues>

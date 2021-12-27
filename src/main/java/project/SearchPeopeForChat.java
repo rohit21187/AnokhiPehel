@@ -26,12 +26,13 @@ public class SearchPeopeForChat extends javax.swing.JFrame {
     {   try
     {
         initComponents();
+        this.setLocation(300,50);
         this.s=s;
         this.os=os;
         this.oi=oi;
         os.writeInt(7);
+        os.flush();
         this.fillList();
-        
     }
     catch(Exception e)
     {
@@ -95,7 +96,7 @@ public class SearchPeopeForChat extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(126, Short.MAX_VALUE)
+                .addContainerGap(130, Short.MAX_VALUE)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(63, 63, 63)
                 .addComponent(refresh)
@@ -112,6 +113,11 @@ public class SearchPeopeForChat extends javax.swing.JFrame {
         );
 
         TearcherList.setBackground(new java.awt.Color(204, 204, 204));
+        TearcherList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TearcherListMouseClicked(evt);
+            }
+        });
         TearcherList.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 TearcherListKeyPressed(evt);
@@ -131,7 +137,7 @@ public class SearchPeopeForChat extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 485, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 561, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -152,6 +158,7 @@ public class SearchPeopeForChat extends javax.swing.JFrame {
         try {
             // TODO add your handling code here:
             os.writeInt(7);
+            os.flush();
             this.fillList();
             
         } catch (IOException ex) {
@@ -162,11 +169,22 @@ public class SearchPeopeForChat extends javax.swing.JFrame {
 
     private void TearcherListKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TearcherListKeyPressed
         // TODO add your handling code here:
-        TearcherList.getSelectedValue();
+       ChatPage cp=new ChatPage(this.s,this.oi,this.os, TearcherList.getSelectedValue());
+       cp.setVisible(true);
+       this.dispose();
         
         
         
     }//GEN-LAST:event_TearcherListKeyPressed
+
+    private void TearcherListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TearcherListMouseClicked
+        // TODO add your handling code here:
+        this.dispose();
+        ChatPage cp=new ChatPage(this.s,this.oi,this.os, TearcherList.getSelectedValue());
+       cp.setVisible(true);
+       
+        
+    }//GEN-LAST:event_TearcherListMouseClicked
 
     /**
      * @param args the command line arguments

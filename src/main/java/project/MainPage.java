@@ -391,11 +391,10 @@ public class MainPage extends javax.swing.JFrame {
     private void chatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_chatMouseClicked
         // TODO add your handling code here:
         try{
-            String str="";
-            ChatPage cp=new ChatPage(this.s,this.oi,this.os,str);
-            cp.setVisible(true);
-            os.write(4);
-            os.flush();
+            
+            SearchPeopeForChat nsfp=new SearchPeopeForChat(this.s,this.os,this.oi);
+            nsfp.setVisible(true);
+            
             //this.setVisible(false);
         }
         catch(Exception e){
