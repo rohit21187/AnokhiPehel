@@ -17,6 +17,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -297,7 +298,7 @@ class ClientHandler  implements Runnable{
             PreparedStatement st=null,st1=null;
             ResultSet rs=null,rs1=null;
             cn1=My_Connection2.getconnection();
-            //this.username=(String) getUsername(this.ClientUsername,cn);
+            
             
             do{
                 System.out.println("val");
@@ -312,6 +313,7 @@ class ClientHandler  implements Runnable{
                             os.writeUTF("correct");os.flush();
                             this.verified=true;
                             this.ClientUsername=lg.getUser();//set ClientUsername here using get methord
+                            //this.username=(String) getUsername(cn);
                         }
                         else{
                             System.out.println("wrong");
@@ -413,13 +415,13 @@ class ClientHandler  implements Runnable{
                 os.writeObject(message);
                 
             }
-            else if(val==12)
-            {
-                String user=getUsername(this.ClientUsername,cn);
-                os.writeUTF(user);
-                os.flush();
-                
-            }
+//            else if(val==12)
+//            {
+//                String user=getUsername(this.ClientUsername,cn);
+//                os.writeUTF(user);
+//                os.flush();
+//                
+//            }
             //s.close();
         }while(true);
         }
@@ -436,16 +438,7 @@ class ClientHandler  implements Runnable{
             //os.flush();
         }
     }
-    private String getUsername(String userna,Connection cn)throws SQLException  
-    {
-       String query="select First_Name from users where UserName="+userna;
-        PreparedStatement ps=null;
-        ResultSet rs=null;
-        ps=cn.prepareStatement(query);
-        rs=ps.executeQuery();
-        return rs.getString(1);
-        
-    }
+    
     private String getName(String from,Connection cn)throws SQLException  
     {
         String query="select First_Name from users where UserName="+from;
@@ -453,6 +446,7 @@ class ClientHandler  implements Runnable{
         ResultSet rs=null;
         ps=cn.prepareStatement(query);
         rs=ps.executeQuery();
+        rs.next();
         return rs.getString(1);
     }
     private Vector<String> getMessages(String Table_Name,Connection cn1,Connection cn) throws SQLException 
@@ -491,9 +485,9 @@ class ClientHandler  implements Runnable{
         {
             try
             {
-                if(!clienthandler1.ClientUsername.equals(ClientUsername))
-                {//String send=this.username+": "+messagetosend;
-                    clienthandler1.os.writeUTF(messagetosend);
+                if(!clienthandler1.ClientUsername.equals(this.ClientUsername))
+                {String send=this.username+": "+messagetosend;
+                    clienthandler1.os.writeUTF(send);
                     clienthandler1.os.flush();
                 }
             }catch(Exception e)
