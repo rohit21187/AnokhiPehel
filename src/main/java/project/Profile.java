@@ -27,6 +27,11 @@ public class Profile extends javax.swing.JFrame {
     private Registration user;
     public Profile() {
         initComponents();
+        Back.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BackActionPerformed(evt);
+            }
+        });
     }
     Profile(Socket s,ObjectInputStream oi, ObjectOutputStream os) throws IOException {
         initComponents();

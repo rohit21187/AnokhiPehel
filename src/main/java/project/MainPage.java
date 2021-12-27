@@ -27,6 +27,7 @@ public class MainPage extends javax.swing.JFrame {
     private ObjectInputStream oi;
     private ObjectOutputStream os;
     private int cls;
+    private SearchPeopeForChat spfc=null;
     public MainPage(Socket s,ObjectInputStream oi, ObjectOutputStream os ) {
         initComponents();
         setLocationRelativeTo(null);
@@ -414,8 +415,8 @@ public class MainPage extends javax.swing.JFrame {
         // TODO add your handling code here:
         try{
             
-            SearchPeopeForChat nsfp=new SearchPeopeForChat(this.s,this.os,this.oi);
-            nsfp.setVisible(true);
+            this.spfc=new SearchPeopeForChat(this.s,this.os,this.oi);
+            this.spfc.setVisible(true);
             
             //this.setVisible(false);
         }
@@ -436,6 +437,8 @@ public class MainPage extends javax.swing.JFrame {
             int verify=(int)oi.readInt();
             if(verify==1){
                this.dispose();
+               if(this.spfc!=null)
+                this.spfc.dispose();
                 this.s.close();
             }
             else{

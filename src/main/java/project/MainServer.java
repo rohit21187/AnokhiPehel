@@ -218,7 +218,6 @@ class ClientHandler  implements Runnable{
         }
         return Stud;
     }
-<<<<<<< HEAD
     
     private String getEmail(String first_name,Connection cn)throws SQLException
     {
@@ -297,7 +296,6 @@ class ClientHandler  implements Runnable{
         return username2+"_"+username1;
         
     }
-=======
     private Registration ProfileDetails(Connection cn) throws SQLException {
         System.out.println("in Profile details");
         Registration user = null;
@@ -317,7 +315,7 @@ class ClientHandler  implements Runnable{
 
     }
  
->>>>>>> main
+
     @Override
     public void run() {
         String messagefromclient;
@@ -478,6 +476,8 @@ class ClientHandler  implements Runnable{
             else if(val==7)
             {
                 os.writeObject(fetchUsername(cn));
+                os.flush();
+                System.out.println("wrote");
       
             }
             else if(val==8)
