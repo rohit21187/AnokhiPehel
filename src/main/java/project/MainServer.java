@@ -463,7 +463,6 @@ class ClientHandler  implements Runnable{
             else if(val ==9){//fetch profile details
                 if(this.verified==true){
                     os.writeInt(1);
-                    System.out.println("verified");
                     os.writeObject(ProfileDetails(cn));
                     os.flush();
                 }
@@ -479,7 +478,8 @@ class ClientHandler  implements Runnable{
                     break;
                 }
                 else{
-                    os.writeInt(0);
+                    os.writeInt(1);
+                    os.flush();
                 }
             }
             else if(val==7)
